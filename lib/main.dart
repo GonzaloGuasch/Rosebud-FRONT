@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
@@ -71,14 +72,58 @@ class _MovieContainerState extends State<MovieContainer> {
 
     super.initState();
   }
+  List _movieSearchResult = [];
 
+  Future<void> makeSearch(String movieName) async {
+    final _response = await http.get(Uri.http("10.0.2.2:8080", "movie/searchByTitle/" + movieName));
+    setState(()  {
+      _movieSearchResult = jsonDecode(_response.body);
+    });
+  }
+  List<Widget> MakeMovieResults(List movieResultJSON) {
+      List<Widget> movieList = [];
+      int i = 0;
+      for(i ; i < movieResultJSON.length; i++) {
+        movieList.add(
+           Text(
+             movieResultJSON[i]['title'],
+               textAlign: TextAlign.center,
+           )
+        );
+      }
+      return movieList;
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-          child: Text('HOLA')
+      body: Column(
+          children:
+                <Widget>[Padding(
+                  padding: const EdgeInsets.only(
+                                  left: 40,
+                                  top: 80,
+                                  right: 40,
+                                  bottom: 20,
+                                ),
+                  child: TextField(
+                            textInputAction: TextInputAction.search,
+                            onSubmitted: (value) {
+                                makeSearch(value);
+                            },
+                            decoration: InputDecoration(
+                                    border: OutlineInputBorder(),
+                                    hintText: 'Titulo de la pelicula'
+                                    ),
+                            onChanged: (text) {
+                              print("First text field: $text");
+                            },
+                            ),
+                ),
+                Column(
+                   children:  _movieSearchResult.length != 0 ? MakeMovieResults(_movieSearchResult).toList() : []
+                ),
+                ]
       ),
     );
   }
 }
-
