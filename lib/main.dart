@@ -2,6 +2,8 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
+import 'data_model/Movie.dart';
+
 void main() {
   runApp(RosebudApp());
 }
@@ -77,18 +79,20 @@ class _MovieContainerState extends State<MovieContainer> {
   Future<void> makeSearch(String movieName) async {
     final _response = await http.get(Uri.http("10.0.2.2:8080", "movie/searchByTitle/" + movieName));
     setState(()  {
-      _movieSearchResult = jsonDecode(_response.body);
+      Iterable movieJsonList = jsonDecode(_response.body);
+      List<Movie> movieResultList =  List<Movie>.from(movieJsonList.map((aMovieJson) => Movie.fromJson(aMovieJson)));
+      _movieSearchResult = movieResultList;
     });
   }
-  List<Widget> MakeMovieResults(List movieResultJSON) {
+  List<Widget> MakeMovieResults(List<Movie> movies) {
       List<Widget> movieList = [];
       int i = 0;
-      for(i ; i < movieResultJSON.length; i++) {
+      for(i ; i < movies.length; i++) {
+        Movie movieToDraw = movies[i];
         movieList.add(
-           Text(
-             movieResultJSON[i]['title'],
-               textAlign: TextAlign.center,
-           )
+            MovieCard(
+              movie: movieToDraw
+            )
         );
       }
       return movieList;
@@ -114,9 +118,6 @@ class _MovieContainerState extends State<MovieContainer> {
                                     border: OutlineInputBorder(),
                                     hintText: 'Titulo de la pelicula'
                                     ),
-                            onChanged: (text) {
-                              print("First text field: $text");
-                            },
                             ),
                 ),
                 Column(
@@ -124,6 +125,54 @@ class _MovieContainerState extends State<MovieContainer> {
                 ),
                 ]
       ),
+    );
+  }
+}
+
+
+class MovieCard extends StatelessWidget {
+  final Movie movie;
+
+  const MovieCard({Key key, this.movie}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    print(movie.title);
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => MovieScreem(this.movie)),
+        );
+      },
+      child: Container(
+        padding: const EdgeInsets.all(10.0),
+        margin: EdgeInsets.only(bottom: 20.0), height: 100.0, width: 312.0,
+        decoration: BoxDecoration(border: Border.all()),
+          child: Text(this.movie.title),
+      )
+
+
+    );
+  }
+}
+
+
+class MovieScreem extends StatefulWidget {
+  final Movie movie;
+  const MovieScreem(this.movie, {Key key}) : super(key : key);
+
+  @override
+  _MovieScreemState createState() => _MovieScreemState(movie);
+}
+
+class _MovieScreemState extends State<MovieScreem> {
+    Movie movie;
+  _MovieScreemState(this.movie);
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      child: Text(this.movie.title),
     );
   }
 }
