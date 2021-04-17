@@ -169,6 +169,14 @@ class MovieScreem extends StatefulWidget {
 class _MovieScreemState extends State<MovieScreem> {
     Movie movie;
   _MovieScreemState(this.movie);
+
+  void rateMovie(rating) {
+    final rate = rating.toInt();
+    final _response = http.post(Uri.http("10.0.2.2:8080", "movie/rate"),
+                                body: {'movieTitle': this.movie.title, 'rate': rate.toString()});
+    print(_response.then((value) => print(value.body)));
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -184,7 +192,7 @@ class _MovieScreemState extends State<MovieScreem> {
                 initialRating: 3,
                 minRating: 0,
                 direction: Axis.horizontal,
-                allowHalfRating: true,
+                allowHalfRating: false,
                 itemCount: 5,
                 itemPadding: EdgeInsets.symmetric(horizontal: 4.0),
                 itemBuilder: (context, _) => Icon(
@@ -192,7 +200,7 @@ class _MovieScreemState extends State<MovieScreem> {
                   color: Colors.amber,
                 ),
                 onRatingUpdate: (rating) {
-                  print(rating);
+                  rateMovie(rating);
                 },
               ),
             ],
