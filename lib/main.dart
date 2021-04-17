@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'data_model/Movie.dart';
 
 void main() {
@@ -172,7 +172,32 @@ class _MovieScreemState extends State<MovieScreem> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      child: Text(this.movie.title),
+      child: Center(
+        child: Column(
+            children: [
+              Text(this.movie.title,
+                style: TextStyle(
+                  fontSize: 32,
+                  color: Colors.white,
+                ),),
+              RatingBar.builder(
+                initialRating: 3,
+                minRating: 0,
+                direction: Axis.horizontal,
+                allowHalfRating: true,
+                itemCount: 5,
+                itemPadding: EdgeInsets.symmetric(horizontal: 4.0),
+                itemBuilder: (context, _) => Icon(
+                  Icons.star,
+                  color: Colors.amber,
+                ),
+                onRatingUpdate: (rating) {
+                  print(rating);
+                },
+              ),
+            ],
+        )
+      )
     );
   }
 }
