@@ -167,14 +167,19 @@ class MovieScreem extends StatefulWidget {
 }
 
 class _MovieScreemState extends State<MovieScreem> {
-    Movie movie;
+   Movie movie;
   _MovieScreemState(this.movie);
+
+  @override
+  void initState() {
+    print(movie.reviews);
+  }
 
   void rateMovie(rating) {
     final rate = rating.toInt();
     final _response = http.post(Uri.http("10.0.2.2:8080", "movie/rate"),
                                 body: {'movieTitle': this.movie.title, 'rate': rate.toString()});
-    print(_response.then((value) => print(value.body)));
+    //REFRESH DE WIDGET
   }
 
   @override
