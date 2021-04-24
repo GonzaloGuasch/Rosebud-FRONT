@@ -157,6 +157,52 @@ class MovieCard extends StatelessWidget {
   }
 }
 
+class ReviewCard extends StatelessWidget {
+  final Review review;
+  final String movieTitle;
+  const ReviewCard({Key key, this.review, this.movieTitle}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+            padding: const EdgeInsets.all(10.0),
+            margin: EdgeInsets.only(bottom: 20.0, top: 15.0), height: 130.0, width: 312.0,
+            decoration: BoxDecoration(border: Border.all(), color: Colors.white,),
+            child: Column(
+              children: [
+                      Text(
+                          this.review.review,
+                          style: TextStyle(fontSize: 20),
+                      ),
+                      Row(
+                        children: [
+                                Padding(
+                                    padding: const EdgeInsets.only(left: 120.0, top: 10.0),
+                                    child: Text(
+                                            this.review.userCreate,
+                                            style: TextStyle(fontSize: 20),
+                                    ),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.only(left: 1.0, top: 11.0),
+                                  child: IconButton(
+                                          icon: const Icon(Icons.delete_outline),
+                                          iconSize: 35.0,
+                                          color: Colors.red,
+                                          onPressed: ()  {
+                                            final _response =  http.delete(Uri.http("10.0.2.2:8080", "review/delete/" + this.movieTitle + '/' + this.review.id.toString()));
+                                            print("DELETE");
+                                          })
+                                )]
+                      ),
+              ],
+            )
+          );
+  }
+
+}
+
+
 
 class MovieScreem extends StatefulWidget {
   final Movie movie;
@@ -170,47 +216,59 @@ class _MovieScreemState extends State<MovieScreem> {
    Movie movie;
   _MovieScreemState(this.movie);
 
-  @override
-  void initState() {
-    print(movie.reviews);
-  }
-
   void rateMovie(rating) {
     final rate = rating.toInt();
     final _response = http.post(Uri.http("10.0.2.2:8080", "movie/rate"),
                                 body: {'movieTitle': this.movie.title, 'rate': rate.toString()});
     //REFRESH DE WIDGET
   }
-
+   List<Widget> makeMovieReviews(List<Review> reviews) {
+     List<Widget> reviewList = [];
+     int i = 0;
+     for(i ; i < reviews.length; i++) {
+       Review reviewToDraw = reviews[i];
+       reviewList.add(
+           ReviewCard(
+               review: reviewToDraw,
+               movieTitle: this.movie.title,
+           )
+       );
+     }
+     return reviewList;
+   }
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Center(
-        child: Column(
-            children: [
-              Text(this.movie.title,
-                style: TextStyle(
-                  fontSize: 32,
-                  color: Colors.white,
-                ),),
-              RatingBar.builder(
-                initialRating: 3,
-                minRating: 0,
-                direction: Axis.horizontal,
-                allowHalfRating: false,
-                itemCount: 5,
-                itemPadding: EdgeInsets.symmetric(horizontal: 4.0),
-                itemBuilder: (context, _) => Icon(
-                  Icons.star,
-                  color: Colors.amber,
-                ),
-                onRatingUpdate: (rating) {
-                  rateMovie(rating);
-                },
-              ),
-            ],
-        )
-      )
+    return Material(
+      color: Colors.white,
+      child: Column(
+        children: [
+          SizedBox(height: 80),
+          Text(this.movie.title,
+            style: TextStyle(
+              fontSize: 32,
+              color: Colors.black,
+            ),
+          ),
+          RatingBar.builder(
+            initialRating: 3,
+            minRating: 0,
+            direction: Axis.horizontal,
+            allowHalfRating: false,
+            itemCount: 5,
+            itemPadding: EdgeInsets.symmetric(horizontal: 4.0),
+            itemBuilder: (context, _) => Icon(
+              Icons.star,
+              color: Colors.amber,
+            ),
+            onRatingUpdate: (rating) {
+              rateMovie(rating);
+            },
+          ),
+          Column(
+              children:  movie.reviews.length != 0 ? makeMovieReviews(movie.reviews).toList() : []
+          ),
+        ],
+      ),
     );
   }
 }

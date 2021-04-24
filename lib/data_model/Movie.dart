@@ -21,13 +21,15 @@ class Movie {
 class Review {
   final String userCreate;
   final String review;
+  final int id;
 
-  Review({@required this.userCreate, @required this.review});
+  Review({@required this.userCreate, @required this.review, @required this.id});
 
   factory Review.fromJson(Map<String, dynamic> reviewJson) {
     return Review(
         userCreate: reviewJson['userCreate'],
-        review: reviewJson['review']);
+        review: reviewJson['review'],
+        id: reviewJson['id']);
   }
 }
 
