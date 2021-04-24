@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'constants/constants.dart';
 import 'data_model/Movie.dart';
 
 void main() {
@@ -36,6 +37,8 @@ class _HomeChoiceState extends State<HomeChoice> {
               Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
+                  Text("ELEGI LA CATEGORIA",
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
                   IconButton(
                     icon: Icon(Icons.movie, size: 50),
                     tooltip: 'Movie section',
@@ -67,7 +70,7 @@ class MovieContainer extends StatefulWidget {
 class _MovieContainerState extends State<MovieContainer> {
   @override
   void initState() {
-    final _response = http.get(Uri.http("10.0.2.2:8080", "movie/"));
+    final _response = http.get(Uri.http(BACKEND_PATH_LOCAL, "movie/"));
 
     _response.then((value) => print(value.body))
              .catchError((onError) => print(onError));
@@ -77,7 +80,7 @@ class _MovieContainerState extends State<MovieContainer> {
   List _movieSearchResult = [];
 
   Future<void> makeSearch(String movieName) async {
-    final _response = await http.get(Uri.http("10.0.2.2:8080", "movie/searchByTitle/" + movieName));
+    final _response = await http.get(Uri.http(BACKEND_PATH_LOCAL, "movie/searchByTitle/" + movieName));
     setState(()  {
       Iterable movieJsonList = jsonDecode(_response.body);
       List<Movie> movieResultList =  List<Movie>.from(movieJsonList.map((aMovieJson) => Movie.fromJson(aMovieJson)));
@@ -156,11 +159,12 @@ class MovieCard extends StatelessWidget {
     );
   }
 }
-
 class ReviewCard extends StatelessWidget {
   final Review review;
   final String movieTitle;
-  const ReviewCard({Key key, this.review, this.movieTitle}) : super(key: key);
+  final Function callbackOnDelete;
+
+  const ReviewCard({Key key, this.review, this.movieTitle, this.callbackOnDelete}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -189,9 +193,11 @@ class ReviewCard extends StatelessWidget {
                                           icon: const Icon(Icons.delete_outline),
                                           iconSize: 35.0,
                                           color: Colors.red,
-                                          onPressed: ()  {
-                                            final _response =  http.delete(Uri.http("10.0.2.2:8080", "review/delete/" + this.movieTitle + '/' + this.review.id.toString()));
-                                            print("DELETE");
+                                          onPressed: () async {
+                                            final _response = await http.delete(Uri.http(BACKEND_PATH_LOCAL, "review/delete/" + this.movieTitle + '/' + this.review.id.toString()));
+                                            if(_response.statusCode == 200) {
+                                                callbackOnDelete();
+                                            }
                                           })
                                 )]
                       ),
@@ -218,10 +224,19 @@ class _MovieScreemState extends State<MovieScreem> {
 
   void rateMovie(rating) {
     final rate = rating.toInt();
-    final _response = http.post(Uri.http("10.0.2.2:8080", "movie/rate"),
+    final _response = http.post(Uri.http(BACKEND_PATH_LOCAL, "movie/rate"),
                                 body: {'movieTitle': this.movie.title, 'rate': rate.toString()});
     //REFRESH DE WIDGET
   }
+  void reDraw() async {
+    final _response = await http.get(Uri.http(BACKEND_PATH_LOCAL, "movie/searchByTitle/" + this.movie.title));
+    setState(()  {
+      Iterable movieJsonList = jsonDecode(_response.body);
+      List<Movie> movieResultList =  List<Movie>.from(movieJsonList.map((aMovieJson) => Movie.fromJson(aMovieJson)));
+      this.movie = movieResultList.first;
+    });
+  }
+
    List<Widget> makeMovieReviews(List<Review> reviews) {
      List<Widget> reviewList = [];
      int i = 0;
@@ -231,6 +246,7 @@ class _MovieScreemState extends State<MovieScreem> {
            ReviewCard(
                review: reviewToDraw,
                movieTitle: this.movie.title,
+               callbackOnDelete: () => { this.reDraw() },
            )
        );
      }
