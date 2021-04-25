@@ -44,14 +44,24 @@ class MovieScreem extends StatefulWidget {
 class _MovieScreemState extends State<MovieScreem> {
   Movie movie;
   _MovieScreemState(this.movie);
+  TextEditingController  _controller = new TextEditingController(text: '');
 
   void rateMovie(rating) {
     final rate = rating.toInt();
     final _response = http.post(Uri.http(BACKEND_PATH_LOCAL, "movie/rate"),
         body: {'movieTitle': this.movie.title, 'rate': rate.toString()});
-
   }
-
+  void leaveReview(review) async{
+    final _response = await http.post(Uri.http(BACKEND_PATH_LOCAL, "movie/leaveReview/"),
+                              body: {"movieTitle": this.movie.title, "username": 'usuarioUno', "review": review});
+    if(_response.statusCode == 200) {
+      //todo llevarme la 59-60 a una funcion para no repirme con redraw()
+      var movieResultJSON = jsonDecode(_response.body);
+      setState(() {
+        this.movie = Movie.fromJson(movieResultJSON);
+      });
+    }
+  }
   void reDraw() async {
     final _response = await http.get(Uri.http(BACKEND_PATH_LOCAL, "movie/getByTitle/" + this.movie.title));
     setState(()  {
@@ -61,9 +71,39 @@ class _MovieScreemState extends State<MovieScreem> {
       }
     });
   }
-
+  Widget createInput() {
+    return Column(
+      children: [
+        TextField(
+          controller: _controller,
+          decoration: InputDecoration(
+              border: OutlineInputBorder(),
+              hintText: 'Dejar reseña'
+          )),
+         Row(
+           mainAxisAlignment: MainAxisAlignment.end,
+           children: [
+             TextButton(
+               style: ButtonStyle(
+                 foregroundColor: MaterialStateProperty.all<Color>(Colors.blue),
+               ),
+               onPressed: () {  this.leaveReview(_controller.text); },
+               child: Text('Enviar'),
+             ),
+             TextButton(
+               style: ButtonStyle(
+                 foregroundColor: MaterialStateProperty.all<Color>(Colors.red),
+               ),
+               onPressed: () { _controller.clear();},
+               child: Text('Eliminar'),
+             ),
+           ],
+         )
+      ],
+    );
+  }
   List<Widget> makeMovieReviews(List<Review> reviews) {
-    List<Widget> reviewList = [];
+    List<Widget> reviewList = [this.createInput()];
     int i = 0;
     for(i ; i < reviews.length; i++) {
       Review reviewToDraw = reviews[i];
@@ -106,7 +146,8 @@ class _MovieScreemState extends State<MovieScreem> {
             },
           ),
           Column(
-              children:  movie.reviews.length != 0 ? makeMovieReviews(movie.reviews).toList() : []
+
+              children:  movie.reviews.length != 0 ? makeMovieReviews(movie.reviews).toList() : [this.createInput()]
           ),
         ],
       ),
