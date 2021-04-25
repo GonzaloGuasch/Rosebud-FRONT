@@ -49,8 +49,9 @@ class _MovieScreemState extends State<MovieScreem> {
     final rate = rating.toInt();
     final _response = http.post(Uri.http(BACKEND_PATH_LOCAL, "movie/rate"),
         body: {'movieTitle': this.movie.title, 'rate': rate.toString()});
-    //REFRESH DE WIDGET
+
   }
+
   void reDraw() async {
     final _response = await http.get(Uri.http(BACKEND_PATH_LOCAL, "movie/getByTitle/" + this.movie.title));
     setState(()  {
@@ -90,7 +91,7 @@ class _MovieScreemState extends State<MovieScreem> {
             ),
           ),
           RatingBar.builder(
-            initialRating: 3,
+            initialRating: this.movie.raiting.toDouble(),
             minRating: 0,
             direction: Axis.horizontal,
             allowHalfRating: false,

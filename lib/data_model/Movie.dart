@@ -3,16 +3,17 @@ import 'package:flutter/cupertino.dart';
 class Movie {
   final String title;
   final String director;
+  int raiting;
   final List<Review> reviews;
 
-    Movie({@required this.title, @required this.director, @required this.reviews});
+    Movie({@required this.title, @required this.director, @required this.reviews, @required this.raiting});
 
     factory Movie.fromJson(Map<String, dynamic> movieJson) {
-      print(movieJson);
       List<Review> movieReviews =  List<Review>.from(movieJson['reviews'].map((aMovieReviewJson) => Review.fromJson(aMovieReviewJson)));
       return Movie(
         title: movieJson['title'],
         director: movieJson['director'],
+        raiting: movieJson['raiting'],
         reviews: movieReviews
       );
     }
