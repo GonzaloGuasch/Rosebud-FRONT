@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:rosebud_front/widgets/movie/movie_container.dart';
 
+import 'widgets/NavigationBar.dart';
+
 void main() {
   runApp(RosebudApp());
 }
@@ -12,7 +14,7 @@ class RosebudApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: HomeChoice(),
+      home: NavigationBar(),
     );
   }
 }
