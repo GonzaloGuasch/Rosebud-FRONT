@@ -52,11 +52,12 @@ class _MovieScreemState extends State<MovieScreem> {
     //REFRESH DE WIDGET
   }
   void reDraw() async {
-    final _response = await http.get(Uri.http(BACKEND_PATH_LOCAL, "movie/searchByTitle/" + this.movie.title));
+    final _response = await http.get(Uri.http(BACKEND_PATH_LOCAL, "movie/getByTitle/" + this.movie.title));
     setState(()  {
-      Iterable movieJsonList = jsonDecode(_response.body);
-      List<Movie> movieResultList =  List<Movie>.from(movieJsonList.map((aMovieJson) => Movie.fromJson(aMovieJson)));
-      this.movie = movieResultList.first;
+      if(_response.statusCode == 200) {
+        var movieResultJSON = jsonDecode(_response.body);
+        this.movie = Movie.fromJson(movieResultJSON);
+      }
     });
   }
 
