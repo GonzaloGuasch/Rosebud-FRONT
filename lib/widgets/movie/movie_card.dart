@@ -43,14 +43,27 @@ class MovieScreem extends StatefulWidget {
 
 class _MovieScreemState extends State<MovieScreem> {
   Movie movie;
+  bool isInList = false;
   _MovieScreemState(this.movie);
   TextEditingController  _controller = new TextEditingController(text: '');
 
+  @override
+  void initState()  {
+    super.initState();
+    final _response = http.get(Uri.http(BACKEND_PATH_LOCAL, "movie/getByTitle/" + this.movie.title));
+    setState(()  {
+      _response.then((value) => {
+          this.movie = Movie.fromJson(jsonDecode(value.body))
+      });
+    });
+  }
   void rateMovie(rating) {
     final rate = rating.toInt();
     final _response = http.post(Uri.http(BACKEND_PATH_LOCAL, "movie/rate"),
         body: {'movieTitle': this.movie.title, 'rate': rate.toString()});
+    _response.then((value) => {this.movie = Movie.fromJson(jsonDecode(value.body))});
   }
+
   void leaveReview(review) async{
     final _response = await http.post(Uri.http(BACKEND_PATH_LOCAL, "movie/leaveReview/"),
                               body: {"movieTitle": this.movie.title, "username": 'usuarioUno', "review": review});
@@ -124,11 +137,24 @@ class _MovieScreemState extends State<MovieScreem> {
       child: Column(
         children: [
           SizedBox(height: 80),
-          Text(this.movie.title,
-            style: TextStyle(
-              fontSize: 32,
-              color: Colors.black,
-            ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              IconButton(
+                  icon: isInList ? Icon(Icons.check, color: Colors.green) : Icon(Icons.add, size: 30),
+                  onPressed: () {
+                    final _response = http.post(Uri.http(BACKEND_PATH_LOCAL, "movie/addToWachtedList/"), body: {"username": "usuario", "movieTitle": this.movie.title});
+                    _response.then((value) => setState(() {this.isInList = json.decode(value.body);}));
+
+                  },
+              ),
+              Text(this.movie.title,
+                style: TextStyle(
+                  fontSize: 32,
+                  color: Colors.black,
+                ),
+              ),
+            ],
           ),
           RatingBar.builder(
             initialRating: this.movie.raiting.toDouble(),
@@ -146,7 +172,6 @@ class _MovieScreemState extends State<MovieScreem> {
             },
           ),
           Column(
-
               children:  movie.reviews.length != 0 ? makeMovieReviews(movie.reviews).toList() : [this.createInput()]
           ),
         ],

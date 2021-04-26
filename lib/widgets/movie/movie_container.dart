@@ -18,9 +18,9 @@ class _MovieContainerState extends State<MovieContainer> {
 
   Future<void> makeSearch(String movieName) async {
     final _response = await http.get(Uri.http(BACKEND_PATH_LOCAL, "movie/searchByTitle/" + movieName));
+    Iterable movieJsonList = jsonDecode(_response.body);
+    List<Movie> movieResultList =  List<Movie>.from(movieJsonList.map((aMovieJson) => Movie.fromJson(aMovieJson)));
     setState(()  {
-      Iterable movieJsonList = jsonDecode(_response.body);
-      List<Movie> movieResultList =  List<Movie>.from(movieJsonList.map((aMovieJson) => Movie.fromJson(aMovieJson)));
       _movieSearchResult = movieResultList;
     });
   }
