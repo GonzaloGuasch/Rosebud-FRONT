@@ -48,20 +48,28 @@ class _MovieScreemState extends State<MovieScreem> {
   TextEditingController  _controller = new TextEditingController(text: '');
 
   @override
-  void initState()  {
+  void initState() {
     super.initState();
-    final _response = http.get(Uri.http(BACKEND_PATH_LOCAL, "movie/getByTitle/" + this.movie.title));
-    setState(()  {
-      _response.then((value) => {
-          this.movie = Movie.fromJson(jsonDecode(value.body))
-      });
-    });
+    initialState();
   }
+  void initialState() async {
+    final _movieData = await http.get(Uri.http(BACKEND_PATH_LOCAL, "movie/getByTitle/" + this.movie.title));
+    final _isInList = await http.get(Uri.http(BACKEND_PATH_LOCAL, "user/isMovieInList/" + this.movie.title + "/usuario"));
+      setState(()  {
+        this.movie = Movie.fromJson(jsonDecode(_movieData.body));
+        this.isInList = jsonDecode(_isInList.body);
+      });
+  }
+
   void rateMovie(rating) {
     final rate = rating.toInt();
     final _response = http.post(Uri.http(BACKEND_PATH_LOCAL, "movie/rate"),
         body: {'movieTitle': this.movie.title, 'rate': rate.toString()});
-    _response.then((value) => {this.movie = Movie.fromJson(jsonDecode(value.body))});
+    _response.then((value) => {
+      setState(() {
+        this.movie = Movie.fromJson(jsonDecode(value.body));
+      })
+    });
   }
 
   void leaveReview(review) async{
