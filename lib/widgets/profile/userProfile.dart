@@ -1,11 +1,8 @@
 import 'dart:convert';
-
 import 'package:flutter/cupertino.dart';
 import 'package:rosebud_front/constants/constants.dart';
 import 'package:http/http.dart' as http;
-
 import 'UserStats.dart';
-
 
 class DataProfile extends StatelessWidget {
  final String amount;
@@ -29,24 +26,34 @@ class DataRow extends StatefulWidget {
 
 class _DataRowState extends State<DataRow> {
   int data;
-  @override
-  void initState()  {
-    super.initState();
-    final _user_data = http.get(Uri.http(BACKEND_PATH_LOCAL, "user/info/usuario" ));
-    _user_data.then((value) => {
-      setState(() {this.data = jsonDecode(value.body); })});
+
+  Future<String> userDataAsync() async {
+    final _userData = await http.get(Uri.http(BACKEND_PATH_LOCAL, "user/info/usuario" ));
+    return _userData.body;
   }
+
 
   @override
   Widget build(BuildContext context) {
+    final _value = this.userDataAsync();
     return SizedBox(
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [
-          DataProfile(this.data.toString(), 'vistas'),
-          DataProfile('0', 'seguidores'),
-          DataProfile('0', 'seguidos'),
-        ],
+      child: FutureBuilder<String>(
+          future: _value,
+          builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
+            Widget children;
+            if (snapshot.hasData) {
+              children = DataProfile(snapshot.data.toString(), 'vistas');
+            } else {
+              children = DataProfile('0', 'vistas');
+            }
+            return Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                children,
+                DataProfile('0', 'seguidores'),
+                DataProfile('0', 'seguidos'),
+             ]);
+          },
       ),
     );
   }
