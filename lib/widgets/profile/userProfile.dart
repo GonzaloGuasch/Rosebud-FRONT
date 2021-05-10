@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:rosebud_front/constants/constants.dart';
 import 'package:http/http.dart' as http;
@@ -13,8 +12,8 @@ class DataProfile extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Text(this.amount, style: TextStyle(fontSize: 20.0,fontWeight: FontWeight.bold)),
-        Text(this.category, style: TextStyle(fontSize: 20.0,fontWeight: FontWeight.bold))
+        Text(this.amount, style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold)),
+        Text(this.category, style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold))
       ],
     );
   }
@@ -42,6 +41,7 @@ class _DataRowState extends State<DataRow> {
           builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
             Widget children;
             if (snapshot.hasData) {
+              print(snapshot.data);
               children = DataProfile(snapshot.data.toString(), 'vistas');
             } else {
               children = DataProfile('0', 'vistas');

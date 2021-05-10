@@ -13,17 +13,17 @@ class MovieContainer extends StatefulWidget {
 }
 
 class _MovieContainerState extends State<MovieContainer> {
-
   List _movieSearchResult = [];
 
   Future<void> makeSearch(String movieName) async {
     final _response = await http.get(Uri.http(BACKEND_PATH_LOCAL, "movie/searchByTitle/" + movieName));
-    Iterable movieJsonList = jsonDecode(_response.body);
+    List movieJsonList = jsonDecode(_response.body);
     List<Movie> movieResultList =  List<Movie>.from(movieJsonList.map((aMovieJson) => Movie.fromJson(aMovieJson)));
     setState(()  {
       _movieSearchResult = movieResultList;
     });
   }
+
   List<Widget> MakeMovieResults(List<Movie> movies) {
     List<Widget> movieList = [];
     int i = 0;
@@ -37,6 +37,7 @@ class _MovieContainerState extends State<MovieContainer> {
     }
     return movieList;
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -61,7 +62,7 @@ class _MovieContainerState extends State<MovieContainer> {
             ),
           ),
             Column(
-                children:  _movieSearchResult.length != 0 ? MakeMovieResults(_movieSearchResult).toList() : []
+                children:  _movieSearchResult.length != 0 ? MakeMovieResults(_movieSearchResult).toList() : [Text('No hay ningun resultado', style: TextStyle(fontSize: 20.0,fontWeight: FontWeight.w300))]
             ),
           ]
       ),

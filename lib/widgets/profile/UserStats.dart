@@ -17,7 +17,7 @@ class _UserStatsState extends State<UserStats> {
     super.initState();
     final _user_stats = http.get(Uri.http(BACKEND_PATH_LOCAL, "movie/statsForUser/usuario" ));
     _user_stats.then((value) => {
-      setState((){
+      setState(() {
         this.infoStats = UserInfoStats.fromJson(jsonDecode(value.body));
       })
     });
@@ -32,7 +32,6 @@ class _UserStatsState extends State<UserStats> {
     for(i ; i < this.infoStats.directors.length; i++) {
       String directorName = this.infoStats.directors[i][0];
       String filmsWacthed =  this.infoStats.directors[i][1].toString();
-      print(directorName);
       userDirectorStats.add(
         Text(directorName + ' ' + filmsWacthed, style: TextStyle(fontSize: 20.0))
       );

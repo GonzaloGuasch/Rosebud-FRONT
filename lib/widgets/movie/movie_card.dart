@@ -72,9 +72,9 @@ class _MovieScreemState extends State<MovieScreem> {
     });
   }
 
-  void leaveReview(review) async{
+  void leaveReview(review) async {
     final _response = await http.post(Uri.http(BACKEND_PATH_LOCAL, "movie/leaveReview/"),
-                              body: {"movieTitle": this.movie.title, "username": 'usuarioUno', "review": review});
+                            body: {"movieTitle": this.movie.title, "username": 'usuarioUno', "review": review});
     if(_response.statusCode == 200) {
       //todo llevarme la 59-60 a una funcion para no repirme con redraw()
       var movieResultJSON = jsonDecode(_response.body);
@@ -180,7 +180,8 @@ class _MovieScreemState extends State<MovieScreem> {
             },
           ),
           Column(
-              children:  movie.reviews.length != 0 ? makeMovieReviews(movie.reviews).toList() : [this.createInput()]
+              children:  movie.reviews.length != 0 ? makeMovieReviews(movie.reviews).toList() : [this.createInput(), Text('Se el primerx en dejar una review!',
+                                                                                                                           style: TextStyle(fontSize: 20.0,fontWeight: FontWeight.w400))]
           ),
         ],
       ),
