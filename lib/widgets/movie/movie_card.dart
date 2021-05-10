@@ -64,7 +64,8 @@ class _MovieScreemState extends State<MovieScreem> {
   void rateMovie(rating) {
     final rate = rating.toInt();
     final _response = http.post(Uri.http(BACKEND_PATH_LOCAL, "movie/rate"),
-        body: {'movieTitle': this.movie.title, 'rate': rate.toString()});
+                      headers: { 'Content-type': 'application/json', 'Accept': 'application/json'},
+                      body:  json.encode({'movieTitle': this.movie.title, 'rate': rate.toString()}));
     _response.then((value) => {
       setState(() {
         this.movie = Movie.fromJson(jsonDecode(value.body));
@@ -74,7 +75,8 @@ class _MovieScreemState extends State<MovieScreem> {
 
   void leaveReview(review) async {
     final _response = await http.post(Uri.http(BACKEND_PATH_LOCAL, "movie/leaveReview/"),
-                            body: {"movieTitle": this.movie.title, "username": 'usuarioUno', "review": review});
+                            headers: { 'Content-type': 'application/json', 'Accept': 'application/json'},
+                            body: json.encode({"movieTitle": this.movie.title, "username": 'usuarioUno', "review": review}));
     if(_response.statusCode == 200) {
       //todo llevarme la 59-60 a una funcion para no repirme con redraw()
       var movieResultJSON = jsonDecode(_response.body);
@@ -151,7 +153,9 @@ class _MovieScreemState extends State<MovieScreem> {
               IconButton(
                   icon: isInList ? Icon(Icons.check, color: Colors.green) : Icon(Icons.add, size: 30),
                   onPressed: () {
-                    final _response = http.post(Uri.http(BACKEND_PATH_LOCAL, "movie/addToWachtedList/"), body: {"username": "usuario", "movieTitle": this.movie.title});
+                    final _response = http.post(Uri.http(BACKEND_PATH_LOCAL, "movie/addToWachtedList/"),
+                                      headers: { 'Content-type': 'application/json', 'Accept': 'application/json'},
+                                      body: json.encode({"username": "usuario", "movieTitle": this.movie.title}));
                     _response.then((value) => setState(() {this.isInList = json.decode(value.body);}));
 
                   },
