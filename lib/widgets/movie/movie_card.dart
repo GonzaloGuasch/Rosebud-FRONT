@@ -165,7 +165,7 @@ class _MovieScreemState extends State<MovieScreem> {
       ],
     );
   }
-  List<Widget> makeMovieReviews(List<Review> reviews) {
+  ListView makeMovieReviews(List<Review> reviews) {
     List<Widget> reviewList = [this.createInput()];
     int i = 0;
     for(i ; i < reviews.length; i++) {
@@ -178,7 +178,8 @@ class _MovieScreemState extends State<MovieScreem> {
           )
       );
     }
-    return reviewList;
+
+    return ListView(children: reviewList);
   }
   @override
   Widget build(BuildContext context) {
@@ -223,10 +224,10 @@ class _MovieScreemState extends State<MovieScreem> {
               rateMovie(rating);
             },
           ),
-          Column(
-              children:  movie.reviews.length != 0 ? makeMovieReviews(movie.reviews).toList() : [this.createInput(), Text('Se el primerx en dejar una review!',
-                                                                                                                           style: TextStyle(fontSize: 20.0,fontWeight: FontWeight.w400))]
-          ),
+        Expanded(
+          child:  movie.reviews.length != 0 ? makeMovieReviews(movie.reviews) : Column(children: [this.createInput(), Text('Se el primerx en dejar una review!',
+                                                                                                                            style: TextStyle(fontSize: 20.0,fontWeight: FontWeight.w400))],)
+        )
         ],
       ),
     );

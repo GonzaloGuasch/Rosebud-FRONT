@@ -24,18 +24,21 @@ class _MovieContainerState extends State<MovieContainer> {
     });
   }
 
-  List<Widget> MakeMovieResults(List<Movie> movies) {
+  ListView MakeMovieResults(List<Movie> movies) {
     List<Widget> movieList = [];
     int i = 0;
     for(i ; i < movies.length; i++) {
       Movie movieToDraw = movies[i];
       movieList.add(
-          MovieCard(
-              movie: movieToDraw
+          Padding(
+            padding: const EdgeInsets.only(left: 37.0, right: 37.0),
+            child: MovieCard(
+                movie: movieToDraw
+            ),
           )
       );
     }
-    return movieList;
+    return ListView(children: movieList);
   }
 
   @override
@@ -43,12 +46,13 @@ class _MovieContainerState extends State<MovieContainer> {
     return Scaffold(
       body: Column(
           children:
-          <Widget>[Padding(
+          <Widget>[
+            Padding(
             padding: const EdgeInsets.only(
               left: 40,
               top: 80,
               right: 40,
-              bottom: 20,
+              bottom: 20.0,
             ),
             child: TextField(
               textInputAction: TextInputAction.search,
@@ -61,9 +65,9 @@ class _MovieContainerState extends State<MovieContainer> {
               ),
             ),
           ),
-            Column(
-                children:  _movieSearchResult.length != 0 ? MakeMovieResults(_movieSearchResult).toList() : [Text('No hay ningun resultado', style: TextStyle(fontSize: 20.0,fontWeight: FontWeight.w300))]
-            ),
+          Expanded(
+                child: _movieSearchResult.length != 0 ? MakeMovieResults(_movieSearchResult) : Text('No hay ningun resultado', style: TextStyle(fontSize: 20.0,fontWeight: FontWeight.w300))
+              )
           ]
       ),
     );
