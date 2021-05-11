@@ -73,7 +73,7 @@ class _MovieScreemState extends State<MovieScreem> {
     });
   }
 
-  void leaveReview(review) async {
+  void leaveReview(review, {hasSpoilers=false}) async {
     final _response = await http.post(Uri.http(BACKEND_PATH_LOCAL, "movie/leaveReview/"),
                             headers: { 'Content-type': 'application/json', 'Accept': 'application/json'},
                             body: json.encode({"movieTitle": this.movie.title, "username": 'usuarioUno', "review": review}));
@@ -110,7 +110,47 @@ class _MovieScreemState extends State<MovieScreem> {
                style: ButtonStyle(
                  foregroundColor: MaterialStateProperty.all<Color>(Colors.blue),
                ),
-               onPressed: () {  this.leaveReview(_controller.text); },
+               onPressed: () {
+                 showModalBottomSheet<void>(
+                    context: context,
+                    builder: (BuildContext context) {
+                        return Container(
+                        height: 200,
+                        decoration: BoxDecoration(
+                            border: Border.all(color: Colors.black)
+                        ),
+                        child: Center(
+                          child: Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: <Widget>[
+                                const Text('¿La review contiene spoilers?', style: TextStyle(fontSize: 20.0,fontWeight: FontWeight.w400)),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    ElevatedButton(
+                                        style: ElevatedButton.styleFrom(
+                                          primary: Colors.red, // background
+                                          onPrimary: Colors.white, // foreground
+                                        ),
+                                        child: const Text('Si', style: TextStyle(fontSize: 40.0, fontWeight: FontWeight.w400)),
+                                        onPressed: () =>{ this.leaveReview(_controller.text, hasSpoilers:true),  Navigator.pop(context) }
+                                    ),
+                                    ElevatedButton(
+                                        style: ElevatedButton.styleFrom(
+                                          primary: Colors.green, // background
+                                          onPrimary: Colors.white, // foreground
+                                        ),
+                                        child: const Text('No', style: TextStyle(fontSize: 40.0,fontWeight: FontWeight.w400)),
+                                        onPressed: () => { this.leaveReview(_controller.text),  Navigator.pop(context) }
+                                    )
+                                  ],
+                                )
+                              ],
+                          ),
+                        )
+                      );
+                  });
+                 },
                child: Text('Enviar'),
              ),
              TextButton(
