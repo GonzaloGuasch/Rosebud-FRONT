@@ -47,11 +47,7 @@ class _MovieScreemState extends State<MovieScreem> {
   _MovieScreemState(this.movie);
   TextEditingController  _controller = new TextEditingController(text: '');
 
-  @override
-  void initState() {
-    super.initState();
-    initialState();
-  }
+
   void initialState() async {
     final _movieData = await http.get(Uri.http(BACKEND_PATH_LOCAL, "movie/getByTitle/" + this.movie.title));
     final _isInList = await http.get(Uri.http(BACKEND_PATH_LOCAL, "user/isMovieInList/" + this.movie.title + "/usuario"));
