@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
+import 'package:rosebud_front/widgets/Marketplace/Marketplace.dart';
 import 'package:rosebud_front/widgets/profile/userProfile.dart';
 import 'Home.dart';
 
@@ -11,6 +12,7 @@ class NavigationBar extends StatelessWidget  {
   List<Widget> _buildScreens() {
     return [
       HomeChoice(),
+      MarketPlace(),
       UserProfile()
     ];
   }
@@ -19,6 +21,12 @@ class NavigationBar extends StatelessWidget  {
       PersistentBottomNavBarItem(
         icon: Icon(Icons.home),
         title: ("Home"),
+        activeColorPrimary: CupertinoColors.black,
+        inactiveColorPrimary: CupertinoColors.systemGrey,
+      ),
+      PersistentBottomNavBarItem(
+        icon: Icon(Icons.work),
+        title: ("Marketplace"),
         activeColorPrimary: CupertinoColors.black,
         inactiveColorPrimary: CupertinoColors.systemGrey,
       ),
