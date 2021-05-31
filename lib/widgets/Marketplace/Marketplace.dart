@@ -6,6 +6,7 @@ import 'package:rosebud_front/data_model/JobOffer.dart';
 import 'package:http/http.dart' as http;
 import 'package:rosebud_front/constants/constants.dart';
 
+import 'AddJobOffer.dart';
 import 'JobOffer.dart';
 
 class MarketPlace extends StatefulWidget {
@@ -82,6 +83,17 @@ class _MarketplaceFiltersState extends State<MarketplaceFilters> {
           Filter('Locacion'),
           Filter('Duracion'),
           Filter('Duracion'),
+          Padding(
+            padding: const EdgeInsets.only(top: 70.0),
+            child: IconButton(
+                icon:  Icon(Icons.add_rounded),
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => NewJobOfferForm()),
+                  );
+                }),
+          ),
         ],
       );
   }

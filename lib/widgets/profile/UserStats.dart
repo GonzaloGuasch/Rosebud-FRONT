@@ -23,27 +23,31 @@ class _UserStatsState extends State<UserStats> {
     });
   }
 
-  List<Widget> listOfDirectors() {
-    int i = 0;
-    List<Widget> userDirectorStats = [];
-    userDirectorStats.add(
+  List<Widget> generateStats() {
+    List<Widget> stats = [];
+    stats.add(
         Text('Horas totales vistas: ' + this.infoStats.hoursWatched.toString(), style: TextStyle(fontSize: 20.0))
     );
-    for(i ; i < this.infoStats.directors.length; i++) {
+    for(int j = 0; j < this.infoStats.gendersWatched.length; j++) {
+      stats.add(
+        Text(this.infoStats.gendersWatched[j], style: TextStyle(fontSize: 20.0))
+      );
+    }
+    for(int i = 0; i < this.infoStats.directors.length; i++) {
       String directorName = this.infoStats.directors[i][0];
       String filmsWacthed =  this.infoStats.directors[i][1].toString();
-      userDirectorStats.add(
+      stats.add(
         Text(directorName + ' ' + filmsWacthed, style: TextStyle(fontSize: 20.0))
       );
     }
-    return userDirectorStats;
+    return stats;
   }
 
   @override
   Widget build(BuildContext context) {
     return Container(
         child: this.infoStats != null ? Column( mainAxisAlignment: MainAxisAlignment.center,
-                                          children: this.listOfDirectors(),
+                                          children: this.generateStats(),
                                         )
             : Text(''));
   }

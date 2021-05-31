@@ -1,6 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:rosebud_front/constants/constants.dart';
 import 'package:rosebud_front/data_model/JobOffer.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 class JobOfferCard extends StatelessWidget {
   JobOffer offer;
@@ -51,7 +54,11 @@ class _JobOfferScreemState extends State<JobOfferScreem> {
             Text("La duracion puede variar pero calculamos que minimante va a ser de ${this.jobOffer.durationInWeeks} semanas" , style: TextStyle(fontSize: 18.0)),
             FloatingActionButton(
             onPressed: () {
-              // Add your onPressed code here!
+              final _response = http.post(Uri.http(BACKEND_PATH_LOCAL, "email/sendEmail"),
+                                          headers: { 'Content-type': 'application/json',
+                                                     'Accept': 'application/json'},
+                                          body: json.encode({ "setTo": "gonzaloguasch98@gmail.com",
+                                                              "username": "gonzi" }));
             },
             child: const Icon(Icons.navigation),
             backgroundColor: Colors.green,

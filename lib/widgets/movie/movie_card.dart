@@ -3,9 +3,9 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:rosebud_front/constants/constants.dart';
 import 'package:rosebud_front/data_model/Movie.dart';
-import 'package:http/http.dart' as http;
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:rosebud_front/widgets/review/review.dart';
+import 'package:http/http.dart' as http;
 
 class MovieCard extends StatelessWidget {
   final Movie movie;
@@ -220,6 +220,10 @@ class _MovieScreemState extends State<MovieScreem> {
               rateMovie(rating);
             },
           ),
+        Padding(
+          padding: const EdgeInsets.only(top: 8.0),
+          child: Text("Genero: ${this.movie.title}", style: TextStyle(fontSize: 18.0)),
+        ),
         Expanded(
           child:  movie.reviews.length != 0 ? makeMovieReviews(movie.reviews) : Column(children: [this.createInput(), Text('Se el primerx en dejar una review!',
                                                                                                                             style: TextStyle(fontSize: 20.0,fontWeight: FontWeight.w400))],)
