@@ -37,6 +37,7 @@ class _NewJobOfferFormState extends State<NewJobOfferForm> {
       'icon': Icon(Icons.grade),
     },
   ];
+
   final tituloTextController = TextEditingController();
   final descripcionTextController = TextEditingController();
   final locacionTextController = TextEditingController();
@@ -102,7 +103,7 @@ class _NewJobOfferFormState extends State<NewJobOfferForm> {
                     ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Processing Data')));
                     final _response = http.post(Uri.http(BACKEND_PATH_LOCAL, "jobOffer/create"),
                                                 headers: { 'Content-type': 'application/json', 'Accept': 'application/json'},
-                                                body:  json.encode({'userAuthor': 'usuario',
+                                                body:  json.encode({'userAuthor': 'user_dos',
                                                                     'description': descripcionTextController.text,
                                                                     'title': tituloTextController.text,
                                                                     'remuneration': selectTextController.text,
