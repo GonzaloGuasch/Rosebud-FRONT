@@ -48,9 +48,16 @@ class _MovieContainerState extends State<MovieContainer> {
           children:
           <Widget>[
             Padding(
+          padding: const EdgeInsets.only(top: 80, right: 300),
+              child: IconButton(
+                  icon: const Icon(Icons.arrow_back),
+                  onPressed: () {
+                    Navigator.pop(context);
+              }),
+            ),
+            Padding(
             padding: const EdgeInsets.only(
               left: 40,
-              top: 80,
               right: 40,
               bottom: 20.0,
             ),

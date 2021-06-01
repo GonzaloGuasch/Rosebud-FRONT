@@ -53,6 +53,14 @@ class _NewJobOfferFormState extends State<NewJobOfferForm> {
           padding: const EdgeInsets.only(top: 55.0),
           child: Column(
             children: [
+              Padding(
+                padding: const EdgeInsets.only(right: 350),
+                child: IconButton(
+                    icon: const Icon(Icons.arrow_back),
+                    onPressed: () {
+                      Navigator.pop(context);
+                    }),
+              ),
               TextFormField(
                 controller: tituloTextController,
                 decoration: const InputDecoration(

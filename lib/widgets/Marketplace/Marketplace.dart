@@ -8,6 +8,7 @@ import 'package:rosebud_front/constants/constants.dart';
 import 'package:select_form_field/select_form_field.dart';
 
 
+import '../Home.dart';
 import 'AddJobOffer.dart';
 import 'JobOffer.dart';
 
@@ -143,13 +144,24 @@ class _MarketplaceFiltersState extends State<MarketplaceFilters> {
   Widget build(BuildContext context) {
     return Column(
         children: [
+          Padding(
+            padding: const EdgeInsets.only(top: 50, right: 300),
+            child: IconButton(
+                icon: const Icon(Icons.arrow_back),
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => HomeChoice())
+                  );
+                }),
+          ),
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Filter('Locacion', _locationItems, updateLocationState),
               Filter('Remuneracion', _remuneracion, updateRemuneracionState),
               Padding(
-                padding: const EdgeInsets.only(top: 70.0),
+                padding: const EdgeInsets.only(top: 5.0),
                 child: IconButton(
                     icon:  Icon(Icons.add_rounded),
                     onPressed: () {
@@ -203,7 +215,7 @@ class _FilterState extends State<Filter> {
       child: SizedBox(
         width: 150.0,
         child: Padding(
-          padding: const EdgeInsets.only(top: 65.0, left: 10.0),
+          padding: const EdgeInsets.only(left: 20.0),
           child: SelectFormField(
               type: SelectFormFieldType.dropdown,
               labelText: this.filterName,

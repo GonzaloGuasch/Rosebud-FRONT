@@ -26,9 +26,7 @@ class MovieCard extends StatelessWidget {
           margin: EdgeInsets.only(bottom: 20.0), height: 100.0, width: 312.0,
           decoration: BoxDecoration(border: Border.all()),
           child: Text(this.movie.title),
-        )
-
-
+      )
     );
   }
 }
@@ -183,7 +181,14 @@ class _MovieScreemState extends State<MovieScreem> {
       color: Colors.white,
       child: Column(
         children: [
-          SizedBox(height: 80),
+          Padding(
+            padding: const EdgeInsets.only(top: 50, right: 300),
+            child: IconButton(
+                icon: const Icon(Icons.arrow_back),
+                onPressed: () {
+                  Navigator.pop(context);
+                }),
+          ),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
