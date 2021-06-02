@@ -2,27 +2,31 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:rosebud_front/constants/constants.dart';
 import 'package:rosebud_front/data_model/Movie.dart';
+import 'package:rosebud_front/widgets/profile/VisitUserProfile.dart';
 
 class ReviewCard extends StatefulWidget {
   final Review review;
   final String movieTitle;
   final Function callbackOnDelete;
+  final String username;
 
-  const ReviewCard({Key key, this.review, this.movieTitle, this.callbackOnDelete}) : super(key: key);
+  const ReviewCard({Key key, this.username, this.review, this.movieTitle, this.callbackOnDelete}) : super(key: key);
 
   @override
-  _ReviewCardState createState() => _ReviewCardState(this.review, this.review.hasSpoilers, this.movieTitle, this.callbackOnDelete);
+  _ReviewCardState createState() => _ReviewCardState(this.username, this.review, this.review.hasSpoilers, this.movieTitle, this.callbackOnDelete);
 }
 
 class _ReviewCardState extends State<ReviewCard> {
   final Review review;
   final String movieTitle;
   final Function callbackOnDelete;
+  final String username;
   bool hasSpoilers;
 
-  _ReviewCardState(this.review, this.hasSpoilers, this.movieTitle, this.callbackOnDelete);
+  _ReviewCardState(this.username, this.review, this.hasSpoilers, this.movieTitle, this.callbackOnDelete);
 
   Widget showNormalReview() {
+    print(this.review.userCreate);
     return Container(
         padding: const EdgeInsets.all(10.0),
         margin: EdgeInsets.only(bottom: 20.0, top: 15.0), height: 130.0, width: 312.0,
@@ -42,8 +46,9 @@ class _ReviewCardState extends State<ReviewCard> {
                       style: TextStyle(fontSize: 20),
                     ),
                   ),
+                  this.review.userCreate == this.username ?
                   Padding(
-                      padding: const EdgeInsets.only(left: 1.0, top: 11.0),
+                      padding: const EdgeInsets.only(top: 11.0),
                       child: IconButton(
                           icon: const Icon(Icons.delete_outline),
                           iconSize: 35.0,
@@ -54,6 +59,17 @@ class _ReviewCardState extends State<ReviewCard> {
                               callbackOnDelete();
                             }
                           })
+                  ) : Padding(
+                    padding: const EdgeInsets.only(top: 11.0),
+                    child: ElevatedButton(
+                      child: Text("Ver perfil"),
+                        onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (context) => VisitUserProfile(this.review.userCreate))
+                            );
+                        },
+                    ),
                   )]
             ),
           ],

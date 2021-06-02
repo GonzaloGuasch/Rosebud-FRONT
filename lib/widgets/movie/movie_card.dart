@@ -70,7 +70,7 @@ class _MovieScreemState extends State<MovieScreem> {
   void leaveReview(review, {hasSpoilers=false}) async {
     final _response = await http.post(Uri.http(BACKEND_PATH_LOCAL, "movie/leaveReview/"),
                             headers: { 'Content-type': 'application/json', 'Accept': 'application/json'},
-                            body: json.encode({"movieTitle": this.movie.title, "username": 'usuarioUno', "review": review, "hasSpoilers": hasSpoilers}));
+                            body: json.encode({"movieTitle": this.movie.title, "username": 'usuario', "review": review, "hasSpoilers": hasSpoilers}));
     if(_response.statusCode == 200) {
       //todo llevarme la 59-60 a una funcion para no repirme con redraw()
       var movieResultJSON = jsonDecode(_response.body);
@@ -168,6 +168,8 @@ class _MovieScreemState extends State<MovieScreem> {
           ReviewCard(
             review: reviewToDraw,
             movieTitle: this.movie.title,
+            //todo ACA VA EL USUARIO QUE ESTE LOGEADO!
+            username: "usuario_dos",
             callbackOnDelete: () => { this.reDraw() },
           )
       );
