@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:rosebud_front/constants/constants.dart';
+import 'package:rosebud_front/utils/utils.dart';
 import 'package:select_form_field/select_form_field.dart';
 import 'package:http/http.dart' as http;
 
@@ -108,19 +109,20 @@ class _NewJobOfferFormState extends State<NewJobOfferForm> {
               ElevatedButton(
                 onPressed: () {
                   if (_formKey.currentState.validate()) {
-                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Processing Data')));
                     final _response = http.post(Uri.http(BACKEND_PATH_LOCAL, "jobOffer/create"),
                                                 headers: { 'Content-type': 'application/json', 'Accept': 'application/json'},
-                                                body:  json.encode({'userAuthor': 'user_dos',
+                                                body:  json.encode({'userAuthor': 'user_cuatro',
                                                                     'description': descripcionTextController.text,
                                                                     'title': tituloTextController.text,
                                                                     'remuneration': selectTextController.text,
                                                                     'location': locacionTextController.text,
                                                                     'durationInWeeks': 10,
                                                                     'linkReference': 'asdasd'}));
-                    return;
+                    _response.then((v) => {
+                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: DialogoUploadOffer()))});
                   }
-                  return;
+                  //todo
+                  //ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: DialogUploadOfferError()));
                 },
                 child: Text('Submit'),
               ),
