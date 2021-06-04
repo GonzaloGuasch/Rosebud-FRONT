@@ -53,11 +53,10 @@ class _ReviewCardState extends State<ReviewCard> {
                           icon: const Icon(Icons.delete_outline),
                           iconSize: 35.0,
                           color: Colors.red,
-                          onPressed: () async {
-                            final _response = await http.delete(Uri.http(BACKEND_PATH_LOCAL, "review/delete/" + this.movieTitle + '/' + this.review.id.toString()));
-                            if(_response.statusCode == 200) {
-                              callbackOnDelete();
-                            }
+                          onPressed: ()  {
+                            final _response =  http.delete(Uri.http(BACKEND_PATH_LOCAL, "review/delete/" + this.movieTitle + '/' + this.review.id.toString()));
+                            _response.then((value) => callbackOnDelete());
+                            _response.catchError(() => callbackOnDelete());
                           })
                   ) : Padding(
                     padding: const EdgeInsets.only(top: 11.0),

@@ -68,26 +68,26 @@ class _MovieScreemState extends State<MovieScreem> {
   }
 
   void leaveReview(review, {hasSpoilers=false}) async {
+    //todo ACA VA EL USUARIO LOGEADO
     final _response = await http.post(Uri.http(BACKEND_PATH_LOCAL, "movie/leaveReview/"),
                             headers: { 'Content-type': 'application/json', 'Accept': 'application/json'},
-                            body: json.encode({"movieTitle": this.movie.title, "username": 'usuario', "review": review, "hasSpoilers": hasSpoilers}));
+                            body: json.encode({"elementTitle": this.movie.title, "username": 'usuario', "review": review, "hasSpoilers": hasSpoilers}));
     if(_response.statusCode == 200) {
       //todo llevarme la 59-60 a una funcion para no repirme con redraw()
-      var movieResultJSON = jsonDecode(_response.body);
-      setState(() {
-        this.movie = Movie.fromJson(movieResultJSON);
-      });
+      this.reDraw();
     }
   }
   void reDraw() async {
     final _response = await http.get(Uri.http(BACKEND_PATH_LOCAL, "movie/getByTitle/" + this.movie.title));
-    setState(()  {
-      if(_response.statusCode == 200) {
-        var movieResultJSON = jsonDecode(_response.body);
-        this.movie = Movie.fromJson(movieResultJSON);
-      }
-    });
+    if(_response.statusCode == 200) {
+      var movieResultJSON = jsonDecode(_response.body);
+      var movieUpdate = Movie.fromJson(movieResultJSON);
+      setState(()  {
+        this.movie = movieUpdate;
+      });
+    }
   }
+
   Widget createInput() {
     return Column(
       children: [
@@ -169,7 +169,7 @@ class _MovieScreemState extends State<MovieScreem> {
             review: reviewToDraw,
             movieTitle: this.movie.title,
             //todo ACA VA EL USUARIO QUE ESTE LOGEADO!
-            username: "usuario_dos",
+            username: "user_dos",
             callbackOnDelete: () => { this.reDraw() },
           )
       );
@@ -197,9 +197,11 @@ class _MovieScreemState extends State<MovieScreem> {
               IconButton(
                   icon: isInList ? Icon(Icons.check, color: Colors.green) : Icon(Icons.add, size: 30),
                   onPressed: () {
+                    var body = json.encode({"username": "user_dos", "elementTitle": this.movie.title});
                     final _response = http.post(Uri.http(BACKEND_PATH_LOCAL, "movie/addToWachtedList/"),
                                       headers: { 'Content-type': 'application/json', 'Accept': 'application/json'},
-                                      body: json.encode({"username": "usuario", "movieTitle": this.movie.title}));
+                                      body: body);
+
                     _response.then((value) => setState(() {this.isInList = json.decode(value.body);}));
 
                   },
@@ -232,8 +234,8 @@ class _MovieScreemState extends State<MovieScreem> {
           child: Text("Genero: ${this.movie.title}", style: TextStyle(fontSize: 18.0)),
         ),
         Expanded(
-          child:  movie.reviews.length != 0 ? makeMovieReviews(movie.reviews) : Column(children: [this.createInput(), Text('Se el primerx en dejar una review!',
-                                                                                                                            style: TextStyle(fontSize: 20.0,fontWeight: FontWeight.w400))],)
+          child:  this.movie.reviews.isEmpty  ? Column(children: [this.createInput(), Text('Se el primerx en dejar una review!',
+                                                       style: TextStyle(fontSize: 20.0,fontWeight: FontWeight.w400))],) : this.makeMovieReviews(this.movie.reviews)
         )
         ],
       ),
