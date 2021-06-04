@@ -1,6 +1,9 @@
+import 'dart:convert';
+
 import 'package:flutter/cupertino.dart';
 import 'package:rosebud_front/constants/constants.dart';
 import 'package:http/http.dart' as http;
+import 'package:rosebud_front/data_model/UserData.dart';
 import 'UserStats.dart';
 
 class DataProfile extends StatelessWidget {
@@ -39,20 +42,25 @@ class _DataRowState extends State<DataRow> {
       child: FutureBuilder<String>(
           future: _value,
           builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
-            Widget children;
+            List<Widget> children;
             if (snapshot.hasData) {
-              print(snapshot.data);
-              children = DataProfile(snapshot.data.toString(), 'vistas');
+              var userData = UserData.fromJson(jsonDecode(snapshot.data));
+              children = [
+                DataProfile(userData.moviesWatched.toString(), 'vistas'),
+                DataProfile(userData.followers.toString(), 'seguidores'),
+                DataProfile(userData.following.toString(), 'seguidos'),
+              ];
             } else {
-              children = DataProfile('0', 'vistas');
+              children = [
+                DataProfile('0', 'vistas'),
+                DataProfile('0', 'seguidores'),
+                DataProfile('0', 'seguidos')
+              ];
             }
             return Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                children,
-                DataProfile('0', 'seguidores'),
-                DataProfile('0', 'seguidos'),
-             ]);
+              children: children
+            );
           },
       ),
     );
