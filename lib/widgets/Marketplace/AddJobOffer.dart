@@ -14,7 +14,92 @@ class NewJobOfferForm extends StatefulWidget {
 
 class _NewJobOfferFormState extends State<NewJobOfferForm> {
   final _formKey = GlobalKey<FormState>();
+  final List<Map<String, dynamic>> _locationItems = [
+    {
+      'value': 'buenosAires',
+      'label': 'Buenos aires',
+    },
+    {
+      'value': 'cordoba',
+      'label': 'Cordoba',
+    },
+    {
+      'value': 'Chacho',
+      'label': 'Chacho',
+    },
+    {
+      'value': 'laPampa',
+      'label': 'La Pampa',
+    },
+    {
+      'value': 'entreRios',
+      'label': 'Entre Rios',
+    },
+    {
+      'value': 'santaFe',
+      'label': 'Sante Fe',
+    },
+    {
+      'value': 'Quilmes',
+      'label': 'Quilmes',
+    },
+  ];
+  final List<Map<String, dynamic>> _durationItems = [
+    {
+      'value': '1',
+      'label': '1 semana',
+    },
+    {
+      'value': '2',
+      'label': '2 semana',
+    },
+    {
+      'value': '3',
+      'label': '3 semana',
+    },
+    {
+      'value': '4',
+      'label': '4 semana',
+    },
+    {
+      'value': '4',
+      'label': '4 semana',
+    },
+    {
+      'value': '5',
+      'label': '5 semana',
+    },
+    {
+      'value': '6',
+      'label': '6 semana',
+    },
+    {
+      'value': '7',
+      'label': '7 semana',
+    },
+    {
+      'value': '8',
+      'label': '8 semana',
+    },
+    {
+      'value': '9',
+      'label': '9 semana',
+    },
+    {
+      'value': '10',
+      'label': '10 semana',
+    },
+    {
+      'value': '11',
+      'label': '11 semana',
+    },
+    {
+      'value': '12',
+      'label': '12 semana',
+    },
 
+
+  ];
   final List<Map<String, dynamic>> _items = [
     {
       'value': 'NoRemunerada',
@@ -43,7 +128,7 @@ class _NewJobOfferFormState extends State<NewJobOfferForm> {
   final descripcionTextController = TextEditingController();
   final locacionTextController = TextEditingController();
   final selectTextController = TextEditingController();
-
+  final durationTextController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -84,16 +169,23 @@ class _NewJobOfferFormState extends State<NewJobOfferForm> {
                 validator: (value) { if (value == null || value.isEmpty) { return 'No dejes el campo vacio'; }
                 },
               ),
-              TextFormField(
-                controller: locacionTextController,
-                decoration: const InputDecoration(
+              SelectFormField(
+                  controller: durationTextController,
+                  type: SelectFormFieldType.dropdown,
+                  items: _durationItems,
                   icon: Icon(Icons.person),
-                  hintText: 'Locacion pensada del proyecto',
-                  labelText: 'locacion',
-                ),
-                // ignore: missing_return
-                validator: (value) { if (value == null || value.isEmpty) { return 'No dejes el campo vacio'; }
-                },
+                  labelText: 'Duracion en semanas',
+                  // ignore: missing_return
+                  validator: (value) { if (value == null || value.isEmpty) { return 'Falta elegir la duracion'; } }
+              ),
+              SelectFormField(
+                  controller: locacionTextController,
+                  type: SelectFormFieldType.dropdown,
+                  items: _locationItems,
+                  icon: Icon(Icons.person),
+                  labelText: 'Locacion de propuesta',
+                  // ignore: missing_return
+                  validator: (value) { if (value == null || value.isEmpty) { return 'Falta elegir la locacion'; } }
               ),
               SelectFormField(
                 controller: selectTextController,
@@ -116,7 +208,7 @@ class _NewJobOfferFormState extends State<NewJobOfferForm> {
                                                                     'title': tituloTextController.text,
                                                                     'remuneration': selectTextController.text,
                                                                     'location': locacionTextController.text,
-                                                                    'durationInWeeks': 10,
+                                                                    'durationInWeeks': durationTextController.text,
                                                                     'linkReference': 'asdasd'}));
                     _response.then((v) => {
                     ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: DialogoUploadOffer()))});
