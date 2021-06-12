@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:rosebud_front/data_model/Movie.dart';
 import 'MovieDescriptionInfo.dart';
 import 'MoviePointReview.dart';
+import 'MovieReviewsFromUser.dart';
 
 class MovieDetail extends StatefulWidget {
   final Movie movie;
@@ -38,6 +39,12 @@ class _MovieDetailState extends State<MovieDetail> {
                     movieTitle: this.movie.title,
                     ratingInMovie: this.movie.raiting.toDouble()
               )
+          ),
+          Container(
+            child: MovieReviewsFromUser(
+                    movieTitle: this.movie.title,
+                    movieReviews: this.movie.reviews,
+            ),
           )
         ],
       ),

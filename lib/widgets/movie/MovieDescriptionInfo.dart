@@ -9,7 +9,6 @@ class MovieDescriptionInfo extends StatefulWidget {
   final String movieDirector;
   final String movieDescription;
 
-
   const MovieDescriptionInfo({Key key, this.movieTitle, this.movieDirector, this.movieDescription}) : super(key: key);
   @override
   _MovieDescriptionInfoState createState() => _MovieDescriptionInfoState(this.movieTitle, this.movieDirector, this.movieDescription);
