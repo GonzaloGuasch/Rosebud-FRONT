@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:rosebud_front/widgets/movie/MovieSearcher.dart';
 import 'package:rosebud_front/widgets/movie/movie_container.dart';
 
 class HomeChoice extends StatefulWidget {
@@ -19,12 +20,13 @@ class _HomeChoiceState extends State<HomeChoice> {
               Text("ELEGI LA CATEGORIA",
                   style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
               IconButton(
+                key: Key('MovieButton'),
                 icon: Icon(Icons.movie, size: 50),
                 tooltip: 'Movie section',
                 onPressed: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => MovieContainer()),
+                    MaterialPageRoute(builder: (context) => MovieSearcher()),
                   );
                 },
               ),

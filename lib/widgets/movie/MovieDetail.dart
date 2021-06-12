@@ -34,10 +34,9 @@ class _MovieDetailState extends State<MovieDetail> {
                 ),
           ),
           Container(
-            child:
-              MoviePointReview(
-                  movieTitle: this.movie.title,
-                  ratingInMovie: this.movie.raiting.toDouble()
+            child: MoviePointReview(
+                    movieTitle: this.movie.title,
+                    ratingInMovie: this.movie.raiting.toDouble()
               )
           )
         ],

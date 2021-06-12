@@ -43,6 +43,7 @@ class NavigationBar extends StatelessWidget  {
   Widget build(BuildContext context) {
     return PersistentTabView(
       context,
+      key: Key('PersistenteTabView'),
       controller: _controller,
       screens: _buildScreens(),
       items: _navBarsItems(),
