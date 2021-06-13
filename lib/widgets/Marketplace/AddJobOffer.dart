@@ -159,6 +159,7 @@ class _NewJobOfferFormState extends State<NewJobOfferForm> {
                 },
               ),
               TextFormField(
+                maxLines: 2,
                 controller: descripcionTextController,
                 decoration: const InputDecoration(
                   icon: Icon(Icons.person),

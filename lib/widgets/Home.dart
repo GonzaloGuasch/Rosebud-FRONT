@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:rosebud_front/widgets/movie/MovieSearcher.dart';
-import 'package:rosebud_front/widgets/movie/movie_container.dart';
+
 
 class HomeChoice extends StatefulWidget {
   @override

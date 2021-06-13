@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:rosebud_front/data_model/Movie.dart';
+import 'package:rosebud_front/widgets/review/LeaveReview.dart';
 import 'MovieDescriptionInfo.dart';
 import 'MoviePointReview.dart';
 import 'MovieReviewsFromUser.dart';
@@ -39,6 +40,12 @@ class _MovieDetailState extends State<MovieDetail> {
                     movieTitle: this.movie.title,
                     ratingInMovie: this.movie.raiting.toDouble()
               )
+          ),
+          Container(
+            child: LeaveReview(
+                    username: 'usuario',
+                    movieTitle: this.movie.title
+                  )
           ),
           Container(
             child: MovieReviewsFromUser(

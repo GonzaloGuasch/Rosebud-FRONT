@@ -46,7 +46,8 @@ class _MarketPlaceState extends State<MarketPlace> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      child: Column(
+      color: Color(0xff181b20),
+      child: ListView(
         children: [
           MarketplaceFilters(updateJobsOffer),
           Column(
@@ -140,54 +141,62 @@ class _MarketplaceFiltersState extends State<MarketplaceFilters> {
     List<JobOffer> jo = List<JobOffer>.from(jsonDecode(body).map((aJobOfferJson) => JobOffer.fromJson(aJobOfferJson)));
     this.updateJobsOffer(jo);
   }
+
   @override
   Widget build(BuildContext context) {
-    return Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.only(top: 50, right: 300),
-            child: IconButton(
-                icon: const Icon(Icons.arrow_back),
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => HomeChoice())
-                  );
-                }),
-          ),
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Filter('Locacion', _locationItems, updateLocationState),
-              Filter('Remuneracion', _remuneracion, updateRemuneracionState),
+    return Container(
+        child: Column(
+          children: [
               Padding(
-                padding: const EdgeInsets.only(top: 5.0),
-                child: IconButton(
-                    icon:  Icon(Icons.add_rounded),
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => NewJobOfferForm()),
-                      );
-                    }),
+                padding: const EdgeInsets.only(top: 50, right: 100),
+                child: Row(
+                  children: [
+                    IconButton(
+                        icon: const Icon(Icons.arrow_back, color: Colors.white),
+                        onPressed: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (context) => HomeChoice())
+                          );
+                        }),
+                    Text("Ofertas de trabajo", style: TextStyle(color: Colors.white, fontSize: 20.0)),
+                  ],
+                )
               ),
-            ],
-          ),
-          TextButton(
-            style: TextButton.styleFrom(
-            padding: const EdgeInsets.all(13.0),
-            backgroundColor: Colors.teal,
-            primary: Colors.white,
-            textStyle: const TextStyle(fontSize: 20),
-            ),
-            onPressed: () {
-              final _response = http.get(Uri.http(BACKEND_PATH_LOCAL, "jobOffer/applyfilter/${this.locationFilter}/${this.remuneracionFilter}"),
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Filter('Locacion', _locationItems, updateLocationState),
+                  Filter('Remuneracion', _remuneracion, updateRemuneracionState),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 5.0),
+                    child: IconButton(
+                        icon:  Icon(Icons.add_rounded),
+                        onPressed: () {
+                            Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => NewJobOfferForm()),
+                            );
+                        }),
+                  ),
+                ],
+              ),
+              TextButton(
+                  style: TextButton.styleFrom(
+                  padding: const EdgeInsets.all(13.0),
+                  backgroundColor: Colors.teal,
+                  primary: Colors.white,
+                  textStyle: const TextStyle(fontSize: 20),
+              ),
+                onPressed: () {
+                  final _response = http.get(Uri.http(BACKEND_PATH_LOCAL, "jobOffer/applyfilter/${this.locationFilter}/${this.remuneracionFilter}"),
                                     headers: { 'Content-type': 'application/json', 'Accept': 'application/json'});
-              _response.then((value) =>  this.updateOffers(value.body));
-            },
-            child: const Text('Aplicar filtros'),
-          ),
+                        _response.then((value) =>  this.updateOffers(value.body));
+                },
+                child: const Text('Aplicar filtros'),
+              ),
         ]
+      ),
     );
   }
 }

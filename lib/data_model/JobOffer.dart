@@ -7,13 +7,15 @@ class JobOffer {
   final String linkReference;
   final int durationInWeeks;
   final String title;
+  final String remuneration;
 
   JobOffer({@required this.userAuthor,
            @required this.title,
            @required this.description,
            @required this.location,
            @required this.linkReference,
-           @required this.durationInWeeks});
+           @required this.durationInWeeks,
+           @required this.remuneration});
 
   factory JobOffer.fromJson(Map<String, dynamic> JobOfferJson) {
     return JobOffer(
@@ -23,6 +25,7 @@ class JobOffer {
       linkReference: JobOfferJson['linkReference'],
       durationInWeeks: JobOfferJson['durationInWeeks'],
       title: JobOfferJson['title'],
+      remuneration: JobOfferJson['remuneration'],
     );
   }
 }
