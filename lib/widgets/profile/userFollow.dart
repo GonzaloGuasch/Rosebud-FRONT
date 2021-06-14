@@ -6,6 +6,8 @@ import 'package:rosebud_front/constants/constants.dart';
 import 'package:rosebud_front/data_model/UserData.dart';
 import 'package:http/http.dart' as http;
 
+import 'VisitUserProfile.dart';
+
 class UserFollow extends StatefulWidget {
   final String username;
   UserFollow(this.username);
@@ -121,8 +123,16 @@ class DejarDeSeguirButtonm extends StatelessWidget {
     return Row(
       children: [
         Padding(
-          padding: const EdgeInsets.only(left: 10),
-          child: Text(this.usernameFollower, style: TextStyle(fontSize: 20)),
+            padding: const EdgeInsets.only(left: 10),
+            child: GestureDetector(
+              onTap: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => VisitUserProfile(this.usernameFollower))
+                );
+              },
+              child: Text(this.usernameFollower, style: TextStyle(fontSize: 20)),
+            )
         ),
         Padding(
           padding: const EdgeInsets.only(left: 145),
@@ -160,7 +170,15 @@ class SeguirAButton extends StatelessWidget {
       children: [
         Padding(
           padding: const EdgeInsets.only(left: 10),
+          child: GestureDetector(
+              onTap: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => VisitUserProfile(this.usernameFollower))
+                );
+              },
           child: Text(this.usernameFollower, style: TextStyle(fontSize: 20)),
+          )
         ),
         Padding(
           padding: const EdgeInsets.only(left: 180),
