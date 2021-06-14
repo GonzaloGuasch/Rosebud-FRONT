@@ -15,3 +15,15 @@ class UserData {
         following: userStatsJSON["following"]);
   }
 }
+
+class UserFollowData {
+  String username;
+
+  UserFollowData({@required this.username});
+
+  factory UserFollowData.fromJson(Map<String, dynamic> userFollow) {
+    return UserFollowData(
+        username: userFollow["username"]
+    );
+  }
+}
