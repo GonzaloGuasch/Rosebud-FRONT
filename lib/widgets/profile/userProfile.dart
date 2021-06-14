@@ -28,7 +28,8 @@ class DataProfileGesture extends StatelessWidget {
   final String username;
   final String amount;
   final String category;
-  const DataProfileGesture(this.username, this.amount, this.category, {Key key}) : super(key : key);
+  final bool isFollowersOfUsers;
+  const DataProfileGesture(this.username, this.amount, this.category, this.isFollowersOfUsers, {Key key}) : super(key : key);
 
   @override
   Widget build(BuildContext context) {
@@ -36,7 +37,7 @@ class DataProfileGesture extends StatelessWidget {
         onTap: () {
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => UserFollow(this.username)),
+            MaterialPageRoute(builder: (context) => UserFollow(this.username, this.isFollowersOfUsers)),
           );
         },
         child: Column(
@@ -75,8 +76,8 @@ class _DataRowState extends State<DataRow> {
               var userData = UserData.fromJson(jsonDecode(snapshot.data));
               children = [
                 DataProfile(userData.moviesWatched.toString(), 'vistas'),
-                DataProfileGesture('usuario', userData.followers.toString(), 'seguidores'),
-                DataProfileGesture('usuario',userData.following.toString(), 'seguidos'),
+                DataProfileGesture('usuario', userData.followers.toString(), 'seguidores', true),
+                DataProfileGesture('usuario', userData.following.toString(), 'seguidos', false),
               ];
             } else {
               children = [

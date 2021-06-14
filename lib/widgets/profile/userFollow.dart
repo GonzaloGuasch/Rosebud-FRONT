@@ -10,7 +10,8 @@ import 'VisitUserProfile.dart';
 
 class UserFollow extends StatefulWidget {
   final String username;
-  UserFollow(this.username);
+  final bool isFollowersOfUsers;
+  UserFollow(this.username, this.isFollowersOfUsers);
 
   @override
   _UserFollowState createState() => _UserFollowState();
@@ -27,13 +28,19 @@ class _UserFollowState extends State<UserFollow> {
   }
 
   void followersOfUser() async {
-    final _userFollowState = await http.get(Uri.http(BACKEND_PATH_LOCAL, "user/seguidores/" + widget.username));
+    var _userFollowState;
+    if(widget.isFollowersOfUsers) {
+      _userFollowState = await http.get(Uri.http(BACKEND_PATH_LOCAL, "user/seguidores/" + widget.username));
+    } else {
+      _userFollowState = await http.get(Uri.http(BACKEND_PATH_LOCAL, "user/seguidos/" + widget.username));
+    }
     List _userFollowList = jsonDecode(_userFollowState.body);
     List<UserFollowData> userFollowers =  List<UserFollowData>.from(_userFollowList.map((aMovieJson) => UserFollowData.fromJson(aMovieJson)));
     List<Widget> listOfUsersWidget = [];
     for(int i = 0; i < userFollowers.length; i++) {
       listOfUsersWidget.add(
         FollowerUserButton(
+            isFollowersOfUsers: widget.isFollowersOfUsers,
             username: widget.username,
             usernameFollower: userFollowers[i].username
         )
@@ -49,7 +56,7 @@ class _UserFollowState extends State<UserFollow> {
     return Scaffold(
       appBar: AppBar(
         iconTheme: IconThemeData(color: Colors.black),
-        title: Text('Seguidores', style: TextStyle(color: Colors.black)),
+        title: widget.isFollowersOfUsers ? Text('Seguidores', style: TextStyle(color: Colors.black)) :  Text('Seguidos', style: TextStyle(color: Colors.black)),
         backgroundColor: Colors.white,
       ),
       body: Column(
@@ -62,15 +69,17 @@ class _UserFollowState extends State<UserFollow> {
 class FollowerUserButton extends StatefulWidget {
   final String usernameFollower;
   final String username;
+  final bool isFollowersOfUsers;
 
-  const FollowerUserButton({this.usernameFollower, this.username});
+  const FollowerUserButton({this.usernameFollower, this.username, this.isFollowersOfUsers});
 
   @override
-  _FollowerUserButtonState createState() => _FollowerUserButtonState();
+  _FollowerUserButtonState createState() => _FollowerUserButtonState(!this.isFollowersOfUsers);
 }
 
 class _FollowerUserButtonState extends State<FollowerUserButton> {
-  bool dejoDeSeguir = false;
+  bool dejoDeSeguir;
+  _FollowerUserButtonState(this.dejoDeSeguir);
 
   void updateDejoDeSeguir() {
     setState(() {
