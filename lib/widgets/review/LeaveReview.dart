@@ -67,10 +67,10 @@ class _AddReviewState extends State<AddReview> {
                              "username": widget.username,
                              "review": _textEditingController.text,
                              "hasSpoilers": this.contieneSpoiler });
-    final _response = http.post(Uri.http(BACKEND_PATH_LOCAL, "movie/rate"),
+    final _response = http.post(Uri.http(BACKEND_PATH_LOCAL, "movie/leaveReview"),
                       headers: { 'Content-type': 'application/json', 'Accept': 'application/json'},
                        body: body);
-    _response.then((value) => print(value.body));
+    _response.then((value) => Navigator.pop(context));
   }
 
   @override
@@ -98,12 +98,12 @@ class _AddReviewState extends State<AddReview> {
             children: [
               this.contieneSpoiler ?
                   Container(
-                      margin: EdgeInsets.all(20),
-                      padding: EdgeInsets.only(top: 10, right: 15, left: 10, bottom: 15),
+                      margin: EdgeInsets.all(10),
+                      padding: EdgeInsets.only(top: 1, right: 1, left: 1, bottom: 1),
                       decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(100),
-                      border: Border.all(width: 3, color: Colors.white)),
-                      child: IconButton( icon: Icon(Icons.check, size: 40.0, color: Colors.white),
+                      border: Border.all(width: 2, color: Colors.white)),
+                      child: IconButton(icon: Icon(Icons.check, size: 20.0, color: Colors.white),
                               onPressed: () {
                                   setState(() {
                                     this.contieneSpoiler = !this.contieneSpoiler;
@@ -111,19 +111,19 @@ class _AddReviewState extends State<AddReview> {
                               })
                           ) :
                   Container(
-                      margin: EdgeInsets.all(20),
-                      padding: EdgeInsets.only(top: 10, right: 15, left: 10, bottom: 15),
+                      margin: EdgeInsets.all(10),
+                      padding: EdgeInsets.only(top: 1, right: 1, left: 1, bottom: 1),
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(100),
-                          border: Border.all(width: 3, color: Colors.white)),
-                      child: IconButton( icon: Icon(Icons.clear, size: 40.0, color: Colors.white),
+                          border: Border.all(width: 2, color: Colors.white)),
+                      child: IconButton(icon: Icon(Icons.clear, size: 20.0, color: Colors.white),
                           onPressed: () {
                             setState(() {
                               this.contieneSpoiler = !this.contieneSpoiler;
                             });
                           })
                   ),
-              Text("Contiene spoiler", style: TextStyle(color: Colors.white, fontSize: 35.0))
+              Text("Contiene spoiler", style: TextStyle(color: Colors.white, fontSize: 30.0))
             ],
           ),
           TextButton(
