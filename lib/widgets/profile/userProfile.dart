@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:feature_discovery/feature_discovery.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:rosebud_front/constants/constants.dart';
@@ -58,6 +59,20 @@ class DataRow extends StatefulWidget {
 class _DataRowState extends State<DataRow> {
   int data;
 
+  @override
+  void initState() {
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      FeatureDiscovery.discoverFeatures(context,
+          <String>[
+            "vistas",
+            "seguidores",
+            "seguidos",
+          ]
+      );
+    });
+    super.initState();
+  }
+
   Future<String> userDataAsync() async {
     final _userData = await http.get(Uri.http(BACKEND_PATH_LOCAL, "user/info/usuario" ));
     return _userData.body;
@@ -75,9 +90,51 @@ class _DataRowState extends State<DataRow> {
             if (snapshot.hasData) {
               var userData = UserData.fromJson(jsonDecode(snapshot.data));
               children = [
-                DataProfile(userData.moviesWatched.toString(), 'vistas'),
-                DataProfileGesture('usuario', userData.followers.toString(), 'seguidores', true),
-                DataProfileGesture('usuario', userData.following.toString(), 'seguidos', false),
+                DescribedFeatureOverlay(
+                  featureId: 'vistas',
+                  targetColor: Colors.white,
+                  textColor: Colors.black,
+                  backgroundColor: Colors.amber,
+                  contentLocation: ContentLocation.trivial,
+                  title: Text('Películas vistas', style: TextStyle(fontSize: 20.0)),
+                  pulseDuration: Duration(seconds: 1),
+                  enablePulsingAnimation: true,
+                  barrierDismissible: false,
+                  overflowMode: OverflowMode.wrapBackground,
+                  openDuration: Duration(seconds: 1),
+                  description: Text('Cuando agregues una peli se va a ver reflejado aca!'),
+                  tapTarget: Icon(Icons.movie),
+                  child: DataProfile(userData.moviesWatched.toString(), 'vistas')),
+                DescribedFeatureOverlay(
+                  featureId: 'seguidores',
+                  targetColor: Colors.white,
+                  textColor: Colors.black,
+                  backgroundColor: Colors.amber,
+                  contentLocation: ContentLocation.trivial,
+                  title: Text('tus seguidores', style: TextStyle(fontSize: 20.0)),
+                  pulseDuration: Duration(seconds: 1),
+                  enablePulsingAnimation: true,
+                  barrierDismissible: false,
+                  overflowMode: OverflowMode.wrapBackground,
+                  openDuration: Duration(seconds: 1),
+                  description: Text('Hace click y mira la lista de quien te sigue'),
+                  tapTarget: Icon(Icons.person),
+                  child:DataProfileGesture('usuario', userData.followers.toString(), 'seguidores', true)),
+                DescribedFeatureOverlay(
+                featureId: 'seguidos',
+                targetColor: Colors.white,
+                textColor: Colors.black,
+                backgroundColor: Colors.amber,
+                contentLocation: ContentLocation.trivial,
+                title: Text('A quien seguis', style: TextStyle(fontSize: 20.0)),
+                pulseDuration: Duration(seconds: 1),
+                enablePulsingAnimation: true,
+                barrierDismissible: false,
+                overflowMode: OverflowMode.wrapBackground,
+                openDuration: Duration(seconds: 1),
+                description: Text('Podes ver siempre a los perfiles que estas siguiendo'),
+                tapTarget: Icon(Icons.person),
+                child: DataProfileGesture('usuario', userData.following.toString(), 'seguidos', false)),
               ];
             } else {
               children = [
