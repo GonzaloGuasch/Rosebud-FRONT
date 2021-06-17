@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:localstorage/localstorage.dart';
 import 'package:rosebud_front/constants/constants.dart';
 import 'package:rosebud_front/data_model/Movie.dart';
 import 'package:http/http.dart' as http;
@@ -9,6 +10,8 @@ import 'package:http/http.dart' as http;
 import 'MovieCard.dart';
 
 class MovieSearcher extends StatefulWidget {
+  final LocalStorage storage;
+  MovieSearcher(this.storage);
 
   @override
   _MovieSearcherState createState() => _MovieSearcherState();
@@ -32,7 +35,8 @@ class _MovieSearcherState extends State<MovieSearcher> {
       Movie movieCardResult = this._movieSearchResult[i];
       list.add(
         MovieCard(
-            movie: movieCardResult
+            movie: movieCardResult,
+            storage: widget.storage
         ),
       );
     }

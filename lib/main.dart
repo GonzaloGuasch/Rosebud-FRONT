@@ -8,8 +8,6 @@ void main() {
 
 class RosebudApp extends StatelessWidget {
 
-
-
   @override
   Widget build(BuildContext context) {
     return FeatureDiscovery(

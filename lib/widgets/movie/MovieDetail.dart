@@ -1,6 +1,7 @@
 import 'package:feature_discovery/feature_discovery.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:localstorage/localstorage.dart';
 import 'package:rosebud_front/data_model/Movie.dart';
 import 'package:rosebud_front/widgets/review/LeaveReview.dart';
 import 'MovieDescriptionInfo.dart';
@@ -9,7 +10,8 @@ import 'MovieReviewsFromUser.dart';
 
 class MovieDetail extends StatefulWidget {
   final Movie movie;
-  const MovieDetail(this.movie, {Key key}) : super(key : key);
+  final LocalStorage storage;
+  const MovieDetail(this.movie, this.storage, {Key key}) : super(key : key);
 
   @override
   _MovieDetailState createState() => _MovieDetailState(movie);
@@ -69,8 +71,8 @@ class _MovieDetailState extends State<MovieDetail> {
             ),
           Container(
             child: LeaveReview(
-                    username: 'usuario',
-                    movieTitle: this.movie.title
+                    movieTitle: this.movie.title,
+                    storage: widget.storage
                   )
           ),
           Container(

@@ -1,7 +1,7 @@
 import 'package:feature_discovery/feature_discovery.dart';
 import 'package:flutter/material.dart';
 import 'package:rosebud_front/widgets/movie/MovieSearcher.dart';
-
+import 'package:localstorage/localstorage.dart';
 
 class HomeChoice extends StatefulWidget {
   @override
@@ -9,6 +9,8 @@ class HomeChoice extends StatefulWidget {
 }
 
 class _HomeChoiceState extends State<HomeChoice> {
+  final LocalStorage storage = new LocalStorage("username");
+
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
@@ -55,7 +57,7 @@ class _HomeChoiceState extends State<HomeChoice> {
                   onPressed: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => MovieSearcher()),
+                      MaterialPageRoute(builder: (context) => MovieSearcher(storage)),
                     );
                   },
                 ),

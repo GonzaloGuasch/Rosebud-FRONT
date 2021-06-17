@@ -3,13 +3,15 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:localstorage/localstorage.dart';
 import 'package:rosebud_front/constants/constants.dart';
+import 'package:rosebud_front/widgets/user/RegisterUser.dart';
+
 
 class LeaveReview extends StatefulWidget {
-  final String username;
   final String movieTitle;
-
-  const LeaveReview({Key key, this.username, this.movieTitle}) : super(key: key);
+  final LocalStorage storage;
+  const LeaveReview({Key key, this.movieTitle, this.storage}) : super(key: key);
 
   @override
   _LeaveReviewState createState() => _LeaveReviewState();
@@ -33,7 +35,7 @@ class _LeaveReviewState extends State<LeaveReview> {
                     onTap: () {
                       Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => AddReview(widget.username, widget.movieTitle))
+                          MaterialPageRoute(builder: (context) => widget.storage.getItem('username') != null ? AddReview(widget.movieTitle, widget.storage) :  RegisterUser(widget.storage))
                       );
                     },
                     child: Row(
@@ -50,10 +52,10 @@ class _LeaveReviewState extends State<LeaveReview> {
 
 
 class AddReview extends StatefulWidget {
-  final String username;
   final String movieTitle;
-
-  AddReview(this.username, this.movieTitle);
+  final LocalStorage storage;
+  AddReview(this.movieTitle, this.storage);
+  
   @override
   _AddReviewState createState() => _AddReviewState();
 }
@@ -63,10 +65,12 @@ class _AddReviewState extends State<AddReview> {
   TextEditingController _textEditingController = TextEditingController();
 
   void sendReview() {
+    String usernameFromLocalStorage = widget.storage.getItem('username')['username'];
     var body =  json.encode({"elementTitle": widget.movieTitle,
-                             "username": widget.username,
+                             "username": usernameFromLocalStorage,
                              "review": _textEditingController.text,
                              "hasSpoilers": this.contieneSpoiler });
+
     final _response = http.post(Uri.http(BACKEND_PATH_LOCAL, "movie/leaveReview"),
                       headers: { 'Content-type': 'application/json', 'Accept': 'application/json'},
                        body: body);

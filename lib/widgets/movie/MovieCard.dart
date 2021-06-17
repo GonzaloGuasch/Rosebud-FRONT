@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:localstorage/localstorage.dart';
 import 'package:rosebud_front/data_model/Movie.dart';
 
 import 'MovieDetail.dart';
@@ -7,8 +8,9 @@ import 'MovieDetail.dart';
 
 class MovieCard extends StatelessWidget {
   final Movie movie;
+  final LocalStorage storage;
 
-  const MovieCard({Key key, this.movie}) : super(key: key);
+  const MovieCard({Key key, this.movie, this.storage}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +18,7 @@ class MovieCard extends StatelessWidget {
         onTap: () {
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => MovieDetail(this.movie)),
+            MaterialPageRoute(builder: (context) => MovieDetail(this.movie, this.storage)),
           );
         },
         child:
