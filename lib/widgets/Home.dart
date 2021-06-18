@@ -1,15 +1,19 @@
 import 'package:feature_discovery/feature_discovery.dart';
 import 'package:flutter/material.dart';
-import 'package:rosebud_front/widgets/movie/MovieSearcher.dart';
 import 'package:localstorage/localstorage.dart';
+import 'package:rosebud_front/widgets/movie/MovieSearcher.dart';
+
 
 class HomeChoice extends StatefulWidget {
+  final LocalStorage storage;
+  HomeChoice(this.storage);
+
   @override
   _HomeChoiceState createState() => _HomeChoiceState();
 }
 
 class _HomeChoiceState extends State<HomeChoice> {
-  final LocalStorage storage = new LocalStorage("username");
+
 
   @override
   void initState() {
@@ -57,7 +61,7 @@ class _HomeChoiceState extends State<HomeChoice> {
                   onPressed: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => MovieSearcher(storage)),
+                      MaterialPageRoute(builder: (context) => MovieSearcher(widget.storage)),
                     );
                   },
                 ),

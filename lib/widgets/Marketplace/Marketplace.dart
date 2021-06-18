@@ -3,9 +3,11 @@ import 'dart:convert';
 import 'package:feature_discovery/feature_discovery.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:localstorage/localstorage.dart';
 import 'package:rosebud_front/data_model/JobOffer.dart';
 import 'package:http/http.dart' as http;
 import 'package:rosebud_front/constants/constants.dart';
+import 'package:rosebud_front/widgets/user/RegisterUser.dart';
 import 'package:select_form_field/select_form_field.dart';
 
 
@@ -14,6 +16,9 @@ import 'AddJobOffer.dart';
 import 'JobOffer.dart';
 
 class MarketPlace extends StatefulWidget {
+  final LocalStorage storage;
+  MarketPlace(this.storage);
+
 
   @override
   _MarketPlaceState createState() => _MarketPlaceState();
@@ -53,9 +58,14 @@ class _MarketPlaceState extends State<MarketPlace> {
     });
   }
 
+  void callback() {
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return widget.storage.getItem('username') != null ?
+     Container(
       color: Color(0xff181b20),
       child: ListView(
         children: [
@@ -73,7 +83,7 @@ class _MarketPlaceState extends State<MarketPlace> {
         openDuration: Duration(seconds: 1),
         description: Text('Buscar por locacion y tipo de remunaración en el trabajo que estes buscando!'),
         tapTarget: Icon(Icons.movie),
-        child: MarketplaceFilters(updateJobsOffer)),
+        child: MarketplaceFilters(updateJobsOffer, widget.storage)),
         DescribedFeatureOverlay(
           featureId: 'ofertas',
           targetColor: Colors.white,
@@ -93,13 +103,14 @@ class _MarketPlaceState extends State<MarketPlace> {
           ))
         ],
       )
-    );
+    ) : RegisterUser(widget.storage, callback);
   }
 }
 
 class MarketplaceFilters extends StatefulWidget {
   final Function updateJobsOffer;
-  MarketplaceFilters(this.updateJobsOffer);
+  final LocalStorage storage;
+  MarketplaceFilters(this.updateJobsOffer, this.storage);
 
   @override
   _MarketplaceFiltersState createState() => _MarketplaceFiltersState(updateJobsOffer);
@@ -193,7 +204,7 @@ class _MarketplaceFiltersState extends State<MarketplaceFilters> {
                         onPressed: () {
                           Navigator.push(
                               context,
-                              MaterialPageRoute(builder: (context) => HomeChoice())
+                              MaterialPageRoute(builder: (context) => HomeChoice(widget.storage))
                           );
                         }),
                     Text("Ofertas de trabajo", style: TextStyle(color: Colors.white, fontSize: 20.0)),

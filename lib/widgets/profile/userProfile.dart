@@ -3,10 +3,12 @@ import 'dart:convert';
 import 'package:feature_discovery/feature_discovery.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:localstorage/localstorage.dart';
 import 'package:rosebud_front/constants/constants.dart';
 import 'package:http/http.dart' as http;
 import 'package:rosebud_front/data_model/UserData.dart';
 import 'package:rosebud_front/widgets/profile/userFollow.dart';
+import 'package:rosebud_front/widgets/user/RegisterUser.dart';
 import 'UserStats.dart';
 
 class DataProfile extends StatelessWidget {
@@ -154,9 +156,17 @@ class _DataRowState extends State<DataRow> {
 }
 
 class UserProfile extends StatelessWidget {
+  final LocalStorage storage;
+  UserProfile(this.storage);
+
   @override
   Widget build(BuildContext context) {
-    return Container(
+    void callback() {
+      Navigator.pop(context);
+    }
+    
+    return this.storage.getItem('username') != null ?
+    Container(
       child: Padding(
         padding: const EdgeInsets.only(top: 30.0),
         child: Column(
@@ -167,6 +177,6 @@ class UserProfile extends StatelessWidget {
           ],
         ),
       ),
-    );
+    ) : RegisterUser(this.storage, callback);
   }
 }

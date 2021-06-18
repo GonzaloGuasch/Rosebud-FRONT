@@ -20,6 +20,10 @@ class LeaveReview extends StatefulWidget {
 class _LeaveReviewState extends State<LeaveReview> {
   @override
   Widget build(BuildContext context) {
+    void callback() {
+      Navigator.pop(context);
+    }
+
     return Material(
         color: Color(0xff181b20),
         child: Container(
@@ -35,7 +39,7 @@ class _LeaveReviewState extends State<LeaveReview> {
                     onTap: () {
                       Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => widget.storage.getItem('username') != null ? AddReview(widget.movieTitle, widget.storage) :  RegisterUser(widget.storage))
+                          MaterialPageRoute(builder: (context) => widget.storage.getItem('username') != null ? AddReview(widget.movieTitle, widget.storage) :  RegisterUser(widget.storage, callback))
                       );
                     },
                     child: Row(

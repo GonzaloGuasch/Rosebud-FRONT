@@ -45,7 +45,7 @@ class DialogUploadOfferError extends StatelessWidget {
           onPressed: () {
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) =>  MarketPlace()),
+              MaterialPageRoute(builder: (context) =>  MarketPlace(null)),
             );
             Navigator.of(context).pop();
           },

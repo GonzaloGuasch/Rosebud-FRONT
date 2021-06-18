@@ -8,7 +8,8 @@ import 'package:http/http.dart' as http;
 
 class RegisterUser extends StatefulWidget {
   final LocalStorage storage;
-  RegisterUser(this.storage);
+  final Function callback;
+  RegisterUser(this.storage, this.callback);
 
   @override
   _RegisterUserState createState() => _RegisterUserState();
@@ -89,7 +90,7 @@ class _RegisterUserState extends State<RegisterUser> {
 
                         _response.then((value) => {
                             widget.storage.setItem("username", {"username": jsonDecode(value.body)['username']}),
-                            Navigator.pop(context)
+                            widget.callback()
                         });
 
                         ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Processing Data')));

@@ -1,19 +1,23 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:localstorage/localstorage.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 import 'package:rosebud_front/widgets/Marketplace/Marketplace.dart';
 import 'package:rosebud_front/widgets/profile/userProfile.dart';
 import 'Home.dart';
 
 class NavigationBar extends StatelessWidget  {
+  final LocalStorage storage;
+  NavigationBar(this.storage);
+
   PersistentTabController _controller = PersistentTabController(
       initialIndex: 0);
 
   List<Widget> _buildScreens() {
     return [
-      HomeChoice(),
-      MarketPlace(),
-      UserProfile()
+      HomeChoice(storage),
+      MarketPlace(storage),
+      UserProfile(storage)
     ];
   }
   List<PersistentBottomNavBarItem> _navBarsItems() {
