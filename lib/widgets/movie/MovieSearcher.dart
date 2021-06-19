@@ -40,7 +40,6 @@ class _MovieSearcherState extends State<MovieSearcher> {
         ),
       );
     }
-
     return new Column(children: list);
   }
 

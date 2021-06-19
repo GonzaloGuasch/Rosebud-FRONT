@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:localstorage/localstorage.dart';
 import 'package:rosebud_front/constants/constants.dart';
 import 'package:rosebud_front/data_model/UserData.dart';
 import 'package:http/http.dart' as http;
@@ -11,7 +12,8 @@ import 'VisitUserProfile.dart';
 class UserFollow extends StatefulWidget {
   final String username;
   final bool isFollowersOfUsers;
-  UserFollow(this.username, this.isFollowersOfUsers);
+  final LocalStorage storage;
+  UserFollow(this.username, this.isFollowersOfUsers, this.storage);
 
   @override
   _UserFollowState createState() => _UserFollowState();
@@ -40,6 +42,7 @@ class _UserFollowState extends State<UserFollow> {
     for(int i = 0; i < userFollowers.length; i++) {
       listOfUsersWidget.add(
         FollowerUserButton(
+            storage: widget.storage,
             isFollowersOfUsers: widget.isFollowersOfUsers,
             username: widget.username,
             usernameFollower: userFollowers[i].username
@@ -70,8 +73,8 @@ class FollowerUserButton extends StatefulWidget {
   final String usernameFollower;
   final String username;
   final bool isFollowersOfUsers;
-
-  const FollowerUserButton({this.usernameFollower, this.username, this.isFollowersOfUsers});
+  final LocalStorage storage;
+  const FollowerUserButton({this.usernameFollower, this.username, this.isFollowersOfUsers, this.storage});
 
   @override
   _FollowerUserButtonState createState() => _FollowerUserButtonState(!this.isFollowersOfUsers);
@@ -107,11 +110,13 @@ class _FollowerUserButtonState extends State<FollowerUserButton> {
         ),
         child: this.dejoDeSeguir ?
         SeguirAButton(
+            storage: widget.storage,
             username: widget.username,
             usernameFollower: widget.usernameFollower,
             callbackFunction: this.updateEmpezoASeguir
         ) :
         DejarDeSeguirButtonm(
+            storage: widget.storage,
             username: widget.username,
             usernameFollower: widget.usernameFollower,
             callbackFunction: this.updateDejoDeSeguir
@@ -125,7 +130,8 @@ class DejarDeSeguirButtonm extends StatelessWidget {
   final String usernameFollower;
   final String username;
   final Function callbackFunction;
-  const DejarDeSeguirButtonm({Key key, this.usernameFollower, this.username, this.callbackFunction}) : super(key: key);
+  final LocalStorage storage;
+  const DejarDeSeguirButtonm({Key key, this.usernameFollower, this.username, this.callbackFunction, this.storage}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -137,7 +143,7 @@ class DejarDeSeguirButtonm extends StatelessWidget {
               onTap: () {
                 Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => VisitUserProfile(this.usernameFollower))
+                    MaterialPageRoute(builder: (context) => VisitUserProfile(this.usernameFollower, this.storage))
                 );
               },
               child: Text(this.usernameFollower, style: TextStyle(fontSize: 20)),
@@ -171,7 +177,8 @@ class SeguirAButton extends StatelessWidget {
   final String usernameFollower;
   final String username;
   final Function callbackFunction;
-  const SeguirAButton({Key key, this.usernameFollower, this.username, this.callbackFunction}) : super(key: key);
+  final LocalStorage storage;
+  const SeguirAButton({Key key, this.usernameFollower, this.username, this.callbackFunction, this.storage}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -183,7 +190,7 @@ class SeguirAButton extends StatelessWidget {
               onTap: () {
                 Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => VisitUserProfile(this.usernameFollower))
+                    MaterialPageRoute(builder: (context) => VisitUserProfile(this.usernameFollower, this.storage))
                 );
               },
           child: Text(this.usernameFollower, style: TextStyle(fontSize: 20)),
@@ -201,7 +208,7 @@ class SeguirAButton extends StatelessWidget {
                 )
             ),
             onPressed: () {
-              final response = http.post(Uri.http(BACKEND_PATH_LOCAL, "user/seguirA/" + username + "/" + usernameFollower));
+              final response = http.post(Uri.http(BACKEND_PATH_LOCAL, "user/seguirA/${username}/${usernameFollower}"));
               response.then(this.callbackFunction());
             },
             child: Text('Seguir', style: TextStyle(color: Colors.black, fontWeight: FontWeight.w500)),

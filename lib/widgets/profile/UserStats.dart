@@ -1,11 +1,15 @@
 import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
+import 'package:localstorage/localstorage.dart';
 import 'package:rosebud_front/constants/constants.dart';
 import 'package:http/http.dart' as http;
 import 'package:rosebud_front/data_model/UserStats.dart';
 
 class UserStats extends StatefulWidget {
+  final LocalStorage storage;
+  UserStats(this.storage);
+
   @override
   _UserStatsState createState() => _UserStatsState();
 }
@@ -15,7 +19,8 @@ class _UserStatsState extends State<UserStats> {
   @override
   void initState()  {
     super.initState();
-    final _user_stats = http.get(Uri.http(BACKEND_PATH_LOCAL, "movie/statsForUser/usuario" ));
+    String username = widget.storage.getItem('username')['username'];
+    final _user_stats = http.get(Uri.http(BACKEND_PATH_LOCAL, "movie/statsForUser/${username}" ));
     _user_stats.then((value) => {
       setState(() {
         this.infoStats = UserInfoStats.fromJson(jsonDecode(value.body));

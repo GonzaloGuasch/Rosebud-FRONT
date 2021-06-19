@@ -3,11 +3,13 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:localstorage/localstorage.dart';
 import 'package:rosebud_front/constants/constants.dart';
 
 class VisitUserProfile extends StatefulWidget {
   final String userName;
-  VisitUserProfile(this.userName);
+  final LocalStorage storage;
+  VisitUserProfile(this.userName, this.storage);
 
   @override
   _VisitUserProfileState createState() => _VisitUserProfileState(this.userName);
@@ -22,9 +24,11 @@ class _VisitUserProfileState extends State<VisitUserProfile> {
   @override
   void initState()  {
     super.initState();
-    final _userData =  http.get(Uri.http(BACKEND_PATH_LOCAL, "user/getDataVisitProfile/" + this.username));
-    //todo aca lo tendría que sacar del localstroga
-    final _sigueAUsuario = http.get(Uri.http(BACKEND_PATH_LOCAL, "user/sigueA/" + "user_tres" + "/" + this.username));
+    final _userData =  http.get(Uri.http(BACKEND_PATH_LOCAL, "user/getDataVisitProfile/${this.username}"));
+
+    String username = widget.storage.getItem('username')['username'];
+    final _sigueAUsuario = http.get(Uri.http(BACKEND_PATH_LOCAL, "user/sigueA/${username}/ ${this.username}"));
+
     _userData.then((value) => {
       setState(() {
         this.amountReviews = jsonDecode(value.body);
@@ -37,8 +41,9 @@ class _VisitUserProfileState extends State<VisitUserProfile> {
       );
   }
   void seguirAUsuario() {
-    //todo aca lo tendría que sacar del localstroga
-    final _response = http.post(Uri.http(BACKEND_PATH_LOCAL, "user/seguirA/" +  this.username + "/" + "user_tres" ),
+    String username = widget.storage.getItem('username')['username'];
+
+    final _response = http.post(Uri.http(BACKEND_PATH_LOCAL, "user/seguirA/${this.username}/${username}"),
                           headers: { 'Content-type': 'application/json', 'Accept': 'application/json'},
                          );
     _response.then((value) => {

@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:localstorage/localstorage.dart';
 import 'package:rosebud_front/widgets/profile/VisitUserProfile.dart';
 
 class ReviewCard extends StatefulWidget {
@@ -7,8 +8,9 @@ class ReviewCard extends StatefulWidget {
   final String review;
   final bool hasSpoilers;
   final int id;
+  final LocalStorage storage;
 
-  const ReviewCard({Key key, this.userCreate, this.review, this.hasSpoilers, this.id}) : super(key: key);
+  const ReviewCard({Key key, this.userCreate, this.review, this.hasSpoilers, this.id, this.storage}) : super(key: key);
   @override
   _ReviewCardState createState() => _ReviewCardState(this.hasSpoilers);
 }
@@ -27,7 +29,7 @@ class _ReviewCardState extends State<ReviewCard> {
   @override
   Widget build(BuildContext context) {
     return Container(
-          child: this.hasSpoilers ? SpoilerCard(showSpoilerReview) : ReviewDetail(widget.userCreate, widget.review),
+          child: this.hasSpoilers ? SpoilerCard(showSpoilerReview) : ReviewDetail(widget.userCreate, widget.review, widget.storage),
     );
   }
 }
@@ -84,8 +86,8 @@ class SpoilerCard extends StatelessWidget {
 class ReviewDetail extends StatelessWidget {
   final String userCreate;
   final String review;
-
-  ReviewDetail(this.userCreate, this.review);
+  final LocalStorage storage;
+  ReviewDetail(this.userCreate, this.review, this.storage);
 
   @override
   Widget build(BuildContext context) {
@@ -102,7 +104,7 @@ class ReviewDetail extends StatelessWidget {
                 onTap: () {
                   Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => VisitUserProfile(this.userCreate))
+                      MaterialPageRoute(builder: (context) => VisitUserProfile(this.userCreate, this.storage))
                   );
                 },
                 child: Text(this.userCreate, style: TextStyle(fontWeight: FontWeight.bold, fontSize: 27.0, color: Color(0xff626c78))),
