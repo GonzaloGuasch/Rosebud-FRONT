@@ -1,7 +1,8 @@
 import 'package:feature_discovery/feature_discovery.dart';
 import 'package:flutter/material.dart';
 import 'package:localstorage/localstorage.dart';
-import 'package:rosebud_front/widgets/movie/MovieSearcher.dart';
+import 'package:rosebud_front/widgets/facade/ElementSearcher.dart';
+
 
 
 class HomeChoice extends StatefulWidget {
@@ -61,7 +62,7 @@ class _HomeChoiceState extends State<HomeChoice> {
                   onPressed: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => MovieSearcher(widget.storage)),
+                      MaterialPageRoute(builder: (context) =>ElementSearcher(widget.storage, true, "Peliculas")),
                     );
                   },
                 ),
@@ -86,7 +87,10 @@ class _HomeChoiceState extends State<HomeChoice> {
                   icon: Icon(Icons.music_note, size: 50),
                   tooltip: 'Music section',
                   onPressed: () {
-
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => ElementSearcher(widget.storage, false, "Discos")),
+                      );
                     },
               ),
           )

@@ -2,7 +2,13 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'dart:convert';
 
-class Movie {
+
+class ElementObject {
+
+}
+
+
+class Movie extends ElementObject {
   final String title;
   final String director;
   int raiting;
