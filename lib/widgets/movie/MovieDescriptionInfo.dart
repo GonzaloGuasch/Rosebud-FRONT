@@ -19,14 +19,10 @@ class _MovieDescriptionInfoState extends State<MovieDescriptionInfo> {
   final String movieTitle;
   final String movieDirector;
   final String movieDescription;
-
   _MovieDescriptionInfoState(this.movieTitle, this.movieDirector, this.movieDescription);
-
-
 
   @override
   Widget build(BuildContext context) {
-
     return Container(
         child: Padding(
           padding: const EdgeInsets.only(left: 14.0, top: 3.0),
@@ -36,10 +32,9 @@ class _MovieDescriptionInfoState extends State<MovieDescriptionInfo> {
               Row(
                 children: [
                   Text(this.movieTitle, style: TextStyle(fontWeight: FontWeight.bold, fontSize: 35.0, color: Colors.white)),
-                  MovieWatched(
-                    storage: widget.storage,
-                    movieTitle: this.movieTitle
-                  ),
+                  widget.storage.getItem('username') != null ? MovieWatched(storage: widget.storage,
+                                                                            movieTitle: this.movieTitle,
+                                                                            username: widget.storage.getItem('username')['username']) : Text(""),
                   ],
               ),
               Padding(
@@ -76,7 +71,8 @@ class _MovieDescriptionInfoState extends State<MovieDescriptionInfo> {
 class MovieWatched extends StatefulWidget {
   final String movieTitle;
   final LocalStorage storage;
-  const MovieWatched({Key key, this.movieTitle, this.storage}) : super(key: key);
+  final String username;
+  const MovieWatched({Key key, this.movieTitle, this.storage, this.username}) : super(key: key);
 
   @override
   _MovieWatchedState createState() => _MovieWatchedState(this.movieTitle);
@@ -94,8 +90,7 @@ class _MovieWatchedState extends State<MovieWatched> {
    }
 
    void updateButtonIcon() async {
-     String username = widget.storage.getItem('username')['username'];
-     final _isInList = await http.get(Uri.http(BACKEND_PATH_LOCAL, "user/isMovieInList/${this.movieTitle}/${username}"));
+     final _isInList = await http.get(Uri.http(BACKEND_PATH_LOCAL, "user/isMovieInList/${this.movieTitle}/${widget.username}"));
      if(_isInList.statusCode == 200) {
        setState(()  {
          this.isInList = jsonDecode(_isInList.body);
@@ -105,12 +100,11 @@ class _MovieWatchedState extends State<MovieWatched> {
 
   @override
   Widget build(BuildContext context) {
-    String username = widget.storage.getItem('username')['username'];
     return Container(
       child:  IconButton(
                 icon: this.isInList ? Icon(Icons.check, color: Colors.green) : Icon(Icons.add, color: Colors.white),
                 onPressed: () {
-                      var body = json.encode({"username":  username, "elementTitle": this.movieTitle});
+                      var body = json.encode({"username": widget.username, "elementTitle": this.movieTitle});
                       final _response = http.post(Uri.http(BACKEND_PATH_LOCAL, "movie/addToWachtedList/"),
                                         headers: { 'Content-type': 'application/json', 'Accept': 'application/json'},
                                         body: body);
