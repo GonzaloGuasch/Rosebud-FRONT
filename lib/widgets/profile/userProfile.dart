@@ -9,7 +9,7 @@ import 'package:http/http.dart' as http;
 import 'package:rosebud_front/data_model/UserData.dart';
 import 'package:rosebud_front/widgets/profile/userFollow.dart';
 import 'package:rosebud_front/widgets/user/RegisterUser.dart';
-import 'UserStats.dart';
+import 'StatsUser.dart';
 
 class DataProfile extends StatelessWidget {
  final String amount;
@@ -33,7 +33,8 @@ class DataProfileGesture extends StatelessWidget {
   final String category;
   final bool isFollowersOfUsers;
   final LocalStorage storage;
-  const DataProfileGesture(this.username, this.amount, this.category, this.isFollowersOfUsers, this.storage, {Key key}) : super(key : key);
+  final Function callback;
+  const DataProfileGesture(this.username, this.amount, this.category, this.isFollowersOfUsers, this.storage, this.callback, {Key key}) : super(key : key);
 
   @override
   Widget build(BuildContext context) {
@@ -41,7 +42,7 @@ class DataProfileGesture extends StatelessWidget {
         onTap: () {
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => UserFollow(this.username, this.isFollowersOfUsers, this.storage)),
+            MaterialPageRoute(builder: (context) => UserFollow(this.username, this.isFollowersOfUsers, this.storage, this.callback)),
           );
         },
         child: Column(
@@ -64,6 +65,10 @@ class DataRow extends StatefulWidget {
 
 class _DataRowState extends State<DataRow> {
   int data;
+
+  void callbackButtonAction() {
+    setState(() {});
+  }
 
   @override
   void initState() {
@@ -89,7 +94,7 @@ class _DataRowState extends State<DataRow> {
   @override
   Widget build(BuildContext context) {
     final _value = this.userDataAsync();
-    String username = widget.storage.getItem('username')['username'];
+   String username = widget.storage.getItem('username')['username'];
     return SizedBox(
       child: FutureBuilder<String>(
           future: _value,
@@ -98,21 +103,6 @@ class _DataRowState extends State<DataRow> {
             if (snapshot.hasData) {
               var userData = UserData.fromJson(jsonDecode(snapshot.data));
               children = [
-                DescribedFeatureOverlay(
-                  featureId: 'vistas',
-                  targetColor: Colors.white,
-                  textColor: Colors.black,
-                  backgroundColor: Colors.amber,
-                  contentLocation: ContentLocation.trivial,
-                  title: Text('Películas vistas', style: TextStyle(fontSize: 20.0)),
-                  pulseDuration: Duration(seconds: 1),
-                  enablePulsingAnimation: true,
-                  barrierDismissible: false,
-                  overflowMode: OverflowMode.wrapBackground,
-                  openDuration: Duration(seconds: 1),
-                  description: Text('Cuando agregues una peli se va a ver reflejado aca!'),
-                  tapTarget: Icon(Icons.movie),
-                  child: DataProfile(userData.moviesWatched.toString(), 'vistas')),
                 DescribedFeatureOverlay(
                   featureId: 'seguidores',
                   targetColor: Colors.white,
@@ -127,7 +117,7 @@ class _DataRowState extends State<DataRow> {
                   openDuration: Duration(seconds: 1),
                   description: Text('Hace click y mira la lista de quien te sigue'),
                   tapTarget: Icon(Icons.person),
-                  child:DataProfileGesture(username, userData.followers.toString(), 'seguidores', true, widget.storage)),
+                  child:DataProfileGesture(username, userData.followers.toString(), 'seguidores', true, widget.storage, this.callbackButtonAction)),
                 DescribedFeatureOverlay(
                 featureId: 'seguidos',
                 targetColor: Colors.white,
@@ -142,7 +132,7 @@ class _DataRowState extends State<DataRow> {
                 openDuration: Duration(seconds: 1),
                 description: Text('Podes ver siempre a los perfiles que estas siguiendo'),
                 tapTarget: Icon(Icons.person),
-                child: DataProfileGesture(username, userData.following.toString(), 'seguidos', false, widget.storage)),
+                child: DataProfileGesture(username, userData.following.toString(), 'seguidos', false, widget.storage, this.callbackButtonAction)),
               ];
             } else {
               children = [
@@ -168,14 +158,21 @@ class UserProfile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return this.storage.getItem('username') != null ?
-    Container(
-      child: Padding(
+    Scaffold(
+      backgroundColor: Color(0xff1a1414),
+      body: Padding(
         padding: const EdgeInsets.only(top: 30.0),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             DataRow(storage),
-            UserStats(storage)
+            StatsUser(storage: storage,
+                      message: "DIRECTORES MAS VISTOS",
+                      category: 'movie'),
+            StatsUser(storage: storage,
+                      message: "BANDAS MAS ESCUCHADAS",
+                      category: 'disk')
           ],
         ),
       ),
