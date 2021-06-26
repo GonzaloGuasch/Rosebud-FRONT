@@ -13,7 +13,8 @@ class UserFollow extends StatefulWidget {
   final String username;
   final bool isFollowersOfUsers;
   final LocalStorage storage;
-  UserFollow(this.username, this.isFollowersOfUsers, this.storage);
+  final Function callback;
+  UserFollow(this.username, this.isFollowersOfUsers, this.storage, this.callback);
 
   @override
   _UserFollowState createState() => _UserFollowState();
@@ -42,6 +43,7 @@ class _UserFollowState extends State<UserFollow> {
     for(int i = 0; i < userFollowers.length; i++) {
       listOfUsersWidget.add(
         FollowerUserButton(
+            callback: widget.callback,
             storage: widget.storage,
             isFollowersOfUsers: widget.isFollowersOfUsers,
             username: widget.username,
@@ -74,10 +76,11 @@ class FollowerUserButton extends StatefulWidget {
   final String username;
   final bool isFollowersOfUsers;
   final LocalStorage storage;
-  const FollowerUserButton({this.usernameFollower, this.username, this.isFollowersOfUsers, this.storage});
+  final Function callback;
+  const FollowerUserButton({this.usernameFollower, this.username, this.isFollowersOfUsers, this.storage, this.callback});
 
   @override
-  _FollowerUserButtonState createState() => _FollowerUserButtonState(!this.isFollowersOfUsers);
+  _FollowerUserButtonState createState() => _FollowerUserButtonState(this.isFollowersOfUsers);
 }
 
 class _FollowerUserButtonState extends State<FollowerUserButton> {
@@ -85,12 +88,11 @@ class _FollowerUserButtonState extends State<FollowerUserButton> {
   _FollowerUserButtonState(this.dejoDeSeguir);
 
   void updateDejoDeSeguir() {
-    setState(() {
-      dejoDeSeguir = true;
-    });
+      widget.callback();
   }
 
   void updateEmpezoASeguir() {
+    if(!mounted){ return; }
     setState(() {
       dejoDeSeguir = false;
     });
@@ -160,9 +162,11 @@ class DejarDeSeguirButtonm extends StatelessWidget {
                     )
                 )
             ),
-            onPressed: () {
-              final response = http.post(Uri.http(BACKEND_PATH_LOCAL, "user/dejarDeseguirA/" + usernameFollower + "/" + username));
-              response.then(this.callbackFunction());
+            onPressed: () async {
+              final response = await http.post(Uri.http(BACKEND_PATH_LOCAL, "user/dejarDeseguirA/${usernameFollower}/${username}"));
+              if (response.statusCode == 200) {
+                this.callbackFunction();
+              }
             },
             child: Text('Dejar de seguir', style: TextStyle(color: Colors.black, fontWeight: FontWeight.w500)),
           ),

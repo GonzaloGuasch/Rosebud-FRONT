@@ -51,7 +51,7 @@ class _ElementSearcherState extends State<ElementSearcher> {
         ),
         body: Container(
             color: Color(0xff334454),
-            child: Column(
+            child: ListView(
               children: [
                 TextField(
                   key: Key('ElementInputSearch'),

@@ -24,22 +24,20 @@ class _VisitUserProfileState extends State<VisitUserProfile> {
   @override
   void initState()  {
     super.initState();
-    final _userData =  http.get(Uri.http(BACKEND_PATH_LOCAL, "user/getDataVisitProfile/${this.username}"));
-
-    String username = widget.storage.getItem('username')['username'];
-    final _sigueAUsuario = http.get(Uri.http(BACKEND_PATH_LOCAL, "user/sigueA/${username}/ ${this.username}"));
-
-    _userData.then((value) => {
-      setState(() {
-        this.amountReviews = jsonDecode(value.body);
-      }),
-    });
-    _sigueAUsuario.then((loSigue) =>
-        setState(() {
-          this.sigueAUsuario = jsonDecode(loSigue.body);
-        })
-      );
+    this.getUserData();
   }
+
+  void getUserData() async {
+    String username = widget.storage.getItem('username')['username'];
+
+    final _userData =  await http.get(Uri.http(BACKEND_PATH_LOCAL, "user/getDataVisitProfile/${this.username}"));
+    final _sigueAUsuario = await  http.get(Uri.http(BACKEND_PATH_LOCAL, "user/sigueA/${username}/${this.username}"));
+      setState(() {
+        this.amountReviews = jsonDecode(_userData.body);
+        this.sigueAUsuario = jsonDecode(_sigueAUsuario.body);
+      });
+  }
+
   void seguirAUsuario() {
     String username = widget.storage.getItem('username')['username'];
 
