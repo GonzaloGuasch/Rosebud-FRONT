@@ -18,7 +18,7 @@ class VisitUserProfile extends StatefulWidget {
 class _VisitUserProfileState extends State<VisitUserProfile> {
   final String username;
   bool sigueAUsuario = false;
-  var amountReviews;
+  List<dynamic> amountReviews;
   _VisitUserProfileState(this.username);
 
   @override
@@ -66,10 +66,10 @@ class _VisitUserProfileState extends State<VisitUserProfile> {
           ),
           Padding(
             padding: const EdgeInsets.only(left: 20.0),
-            child: Text(this.username + " publico " + this.amountReviews.toString() + " reviews",
+            child: Text(this.username + " publico " + this.amountReviews.length.toString() + " reviews",
                 style: TextStyle(fontSize: 20.0,fontWeight: FontWeight.w700)),
           ),
-          this.sigueAUsuario ? Text("Lo seguis") : IconButton(icon: Icon(Icons.add, size: 30), onPressed: () { this.seguirAUsuario(); },)
+          this.sigueAUsuario ? Text("Lo seguis") : IconButton(icon: Icon(Icons.add, size: 30), onPressed: () { this.seguirAUsuario(); })
         ],
       )
     );

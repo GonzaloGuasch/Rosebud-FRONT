@@ -7,9 +7,8 @@ import 'package:localstorage/localstorage.dart';
 import 'package:rosebud_front/data_model/JobOffer.dart';
 import 'package:http/http.dart' as http;
 import 'package:rosebud_front/constants/constants.dart';
-import 'package:rosebud_front/widgets/user/RegisterUser.dart';
 import 'package:select_form_field/select_form_field.dart';
-
+import 'package:rosebud_front/widgets/profile/userProfile.dart';
 
 import '../Home.dart';
 import 'AddJobOffer.dart';
@@ -19,9 +18,9 @@ class MarketPlace extends StatefulWidget {
   final LocalStorage storage;
   MarketPlace(this.storage);
 
-
   @override
   _MarketPlaceState createState() => _MarketPlaceState();
+
 }
 
 class _MarketPlaceState extends State<MarketPlace> {
@@ -103,7 +102,7 @@ class _MarketPlaceState extends State<MarketPlace> {
           ))
         ],
       )
-    ) : RegisterUser(widget.storage, callback);
+    ) : RegisterUserProfile(widget.storage);
   }
 }
 
