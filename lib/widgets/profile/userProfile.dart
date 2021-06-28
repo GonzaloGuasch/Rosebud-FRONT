@@ -48,8 +48,8 @@ class DataProfileGesture extends StatelessWidget {
         },
         child: Column(
           children: [
-              Text(this.amount, style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold)),
-              Text(this.category, style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold))
+              Text(this.amount, style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold, color: Color(0xffd5f971))),
+              Text(this.category, style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold, color: Color(0xffd5f971)))
           ],
         )
     );

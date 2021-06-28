@@ -53,7 +53,10 @@ class _StatsUserState extends State<StatsUser> {
         listColumn.add(
             Padding(
               padding: const EdgeInsets.only(bottom: 20),
-              child: Column(
+              child:
+              Expanded (
+                flex: 4,
+                child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -62,14 +65,23 @@ class _StatsUserState extends State<StatsUser> {
                 ],
               ),
             )
+          )
         );
       }
     }
-    Widget row = Row(children: [
-      Column(children: listColumn.sublist(0, 3)),
-      Padding(
-        padding: const EdgeInsets.only(left: 80),
-        child: Column(children: listColumn.sublist(3, 6)),
+    Widget row = Row(
+        children: [
+          Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: listColumn.sublist(0, 3)),
+          Padding(
+            padding: const EdgeInsets.only(left: 20),
+            child:
+            Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: listColumn.sublist(3, 6)),
       ),
     ]);
     setState(() {
@@ -81,7 +93,7 @@ class _StatsUserState extends State<StatsUser> {
   Widget build(BuildContext context) {
     return Container(
         child: Padding(
-          padding: const EdgeInsets.only(left: 35),
+          padding: const EdgeInsets.only(left: 30),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
