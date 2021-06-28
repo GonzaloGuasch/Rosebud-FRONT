@@ -8,6 +8,7 @@ import 'package:rosebud_front/constants/constants.dart';
 import 'package:http/http.dart' as http;
 import 'package:rosebud_front/data_model/UserData.dart';
 import 'package:rosebud_front/widgets/profile/userFollow.dart';
+import 'package:rosebud_front/widgets/user/LoginUser.dart';
 import 'package:rosebud_front/widgets/user/RegisterUser.dart';
 import 'StatsUser.dart';
 
@@ -185,30 +186,61 @@ class RegisterUserProfile extends StatelessWidget {
   final LocalStorage storage;
   RegisterUserProfile(this.storage);
 
-
-
   @override
   Widget build(BuildContext context) {
-
     void callback() {
        Navigator.pop(context);
     }
 
-    return Padding(
-      padding: const EdgeInsets.only(top: 60),
-      child: Container(
-        child: Column(
-          children: [
-            TextButton(onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => RegisterUser(this.storage, callback)),
-                );
-              },
-              child: Text('Para ver el perfil del usuario es necesario que te registres/logees'))
-          ],
-        )
-      ),
+    return Scaffold(
+      appBar: AppBar(title: const Text('Inicia sesion/registrate'),
+                     backgroundColor: Color(0xff0017ff)),
+      backgroundColor: Color(0xff16086c),
+      body: Padding(
+        padding: const EdgeInsets.only(top: 60),
+        child: Container(
+            child: Column(
+              children: [
+                Text('Primero es necesario que te registres o logees ', style: TextStyle(color: Colors.white, fontSize: 24, fontWeight: FontWeight.w500),),
+                SizedBox(
+                  width: 280,
+                  height: 50,
+                  child:TextButton(
+                          style: ButtonStyle(
+                                  backgroundColor: MaterialStateProperty.all<Color>(Color(0xfffdd94d)),
+                                  foregroundColor: MaterialStateProperty.all<Color>(Color(0xff806d27))),
+                          child: Text('Login', style: TextStyle(fontSize: 17, fontWeight: FontWeight.w500)),
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (context) => LoginUser(this.storage, callback)),
+                            );
+                          },
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(top: 10),
+                  child: SizedBox(
+                    width: 280,
+                    height: 50,
+                    child:TextButton(
+                      style: ButtonStyle(
+                          backgroundColor: MaterialStateProperty.all<Color>(Color(0xff81dfc5)),
+                          foregroundColor: MaterialStateProperty.all<Color>(Color(0xff3c826e))),
+                      child: Text('Register', style: TextStyle(fontSize: 17, fontWeight: FontWeight.w500)),
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => RegisterUser(this.storage, callback)),
+                        );
+                      },
+                    ),
+                  ),
+                ),
+              ],
+            )
+        ),
+      )
     );
   }
 }
