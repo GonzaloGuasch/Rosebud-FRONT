@@ -6,6 +6,8 @@ import 'package:http/http.dart' as http;
 import 'package:localstorage/localstorage.dart';
 import 'package:rosebud_front/constants/constants.dart';
 
+import 'ReviewUserProfile.dart';
+
 class VisitUserProfile extends StatefulWidget {
   final String userName;
   final LocalStorage storage;
@@ -17,6 +19,7 @@ class VisitUserProfile extends StatefulWidget {
 
 class _VisitUserProfileState extends State<VisitUserProfile> {
   final String username;
+  Widget reviews = Text("");
   bool sigueAUsuario = false;
   List<dynamic> amountReviews;
   _VisitUserProfileState(this.username);
@@ -36,11 +39,26 @@ class _VisitUserProfileState extends State<VisitUserProfile> {
         this.amountReviews = jsonDecode(_userData.body);
         this.sigueAUsuario = jsonDecode(_sigueAUsuario.body);
       });
+    this.createReviews();
+  }
+
+
+  void createReviews() {
+     List<Widget> widgetReview = [];
+     this.amountReviews.forEach((element) {
+       print(element);
+       widgetReview.add(ReviewUserProfile(element));
+     });
+
+     Widget row = Row(
+                   mainAxisAlignment: MainAxisAlignment.center,
+                   crossAxisAlignment: CrossAxisAlignment.center,
+                   children: widgetReview);
+     setState(() { reviews = row; });
   }
 
   void seguirAUsuario() {
     String username = widget.storage.getItem('username')['username'];
-
     final _response = http.post(Uri.http(BACKEND_PATH_LOCAL, "user/seguirA/${this.username}/${username}"),
                           headers: { 'Content-type': 'application/json', 'Accept': 'application/json'},
                          );
@@ -69,7 +87,8 @@ class _VisitUserProfileState extends State<VisitUserProfile> {
             child: Text(this.username + " publico " + this.amountReviews.length.toString() + " reviews",
                 style: TextStyle(fontSize: 20.0,fontWeight: FontWeight.w700)),
           ),
-          this.sigueAUsuario ? Text("Lo seguis") : IconButton(icon: Icon(Icons.add, size: 30), onPressed: () { this.seguirAUsuario(); })
+          this.sigueAUsuario ? Text("Lo seguis") : IconButton(icon: Icon(Icons.add, size: 30), onPressed: () { this.seguirAUsuario(); }),
+          this.reviews
         ],
       )
     );
