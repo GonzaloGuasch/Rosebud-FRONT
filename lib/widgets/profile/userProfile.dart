@@ -104,6 +104,7 @@ class _DataRowState extends State<DataRow> {
             if (snapshot.hasData) {
               var userData = UserData.fromJson(jsonDecode(snapshot.data));
               children = [
+                Text(username, style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold, color: Color(0xffd5f971))),
                 DescribedFeatureOverlay(
                   featureId: 'seguidores',
                   targetColor: Colors.white,
@@ -134,6 +135,20 @@ class _DataRowState extends State<DataRow> {
                 description: Text('Podes ver siempre a los perfiles que estas siguiendo'),
                 tapTarget: Icon(Icons.person),
                 child: DataProfileGesture(username, userData.following.toString(), 'seguidos', false, widget.storage, this.callbackButtonAction)),
+                IconButton(
+                  icon: Icon(Icons.logout, color: Color(0xffd5f971)),
+                  tooltip: 'Logout',
+                  onPressed: () {
+                    setState(() {
+                        widget.storage.clear();
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) =>  UserProfile(widget.storage)),
+                        );
+                    });
+                  },
+                ),
+
               ];
             } else {
               children = [
@@ -162,7 +177,7 @@ class UserProfile extends StatelessWidget {
     Scaffold(
       backgroundColor: Color(0xff1a1414),
       body: Padding(
-        padding: const EdgeInsets.only(top: 30.0),
+        padding: const EdgeInsets.only(top: 55.0),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
