@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:localstorage/localstorage.dart';
 import 'package:rosebud_front/widgets/profile/VisitUserProfile.dart';
+import 'package:rosebud_front/widgets/profile/userProfile.dart';
 
 class ReviewCard extends StatefulWidget {
   final String userCreate;
@@ -91,6 +92,8 @@ class ReviewDetail extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    String usernameInContext = '';
+    this.storage.getItem('username') != null ?  usernameInContext = this.storage.getItem('username')['username'] : null;
     return Container(
       child: Padding(
         padding: const EdgeInsets.only(left: 15.0),
@@ -104,7 +107,7 @@ class ReviewDetail extends StatelessWidget {
                 onTap: () {
                   Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => VisitUserProfile(this.userCreate, this.storage))
+                      MaterialPageRoute(builder: (context) => usernameInContext == this.userCreate ?  UserProfile(this.storage): VisitUserProfile(this.userCreate, this.storage))
                   );
                 },
                 child: Text(this.userCreate, style: TextStyle(fontWeight: FontWeight.bold, fontSize: 27.0, color: Color(0xff626c78))),

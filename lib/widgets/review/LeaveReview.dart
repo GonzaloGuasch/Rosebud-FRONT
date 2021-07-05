@@ -8,9 +8,10 @@ import 'package:rosebud_front/constants/constants.dart';
 import 'package:rosebud_front/widgets/profile/userProfile.dart';
 
 class LeaveReview extends StatefulWidget {
-  final String movieTitle;
+  final String ttile;
+  final String category;
   final LocalStorage storage;
-  const LeaveReview({Key key, this.movieTitle, this.storage}) : super(key: key);
+  const LeaveReview({Key key, this.ttile, this.storage, this.category}) : super(key: key);
 
   @override
   _LeaveReviewState createState() => _LeaveReviewState();
@@ -34,13 +35,13 @@ class _LeaveReviewState extends State<LeaveReview> {
                     onTap: () {
                       Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => widget.storage.getItem('username') != null ? AddReview(widget.movieTitle, widget.storage) :  RegisterUserProfile(widget.storage))
+                          MaterialPageRoute(builder: (context) => widget.storage.getItem('username') != null ? AddReview(widget.ttile, widget.category, widget.storage) :  RegisterUserProfile(widget.storage))
                       );
                     },
                     child: Row(
                       children: [
                           Icon(Icons.person, size: 50),
-                          Text("Deja una review si viste la peli!", style: TextStyle(color: Colors.white, fontSize: 22.0))
+                          Text("Deja una review!", style: TextStyle(color: Colors.white, fontSize: 22.0))
                       ],
                     ),
                 )
@@ -51,9 +52,10 @@ class _LeaveReviewState extends State<LeaveReview> {
 
 
 class AddReview extends StatefulWidget {
-  final String movieTitle;
+  final String title;
+  final String category;
   final LocalStorage storage;
-  AddReview(this.movieTitle, this.storage);
+  AddReview(this.title, this.category, this.storage);
   
   @override
   _AddReviewState createState() => _AddReviewState();
@@ -65,12 +67,12 @@ class _AddReviewState extends State<AddReview> {
 
   void sendReview() {
     String usernameFromLocalStorage = widget.storage.getItem('username')['username'];
-    var body =  json.encode({"elementTitle": widget.movieTitle,
+    var body =  json.encode({"elementTitle": widget.title,
                              "username": usernameFromLocalStorage,
                              "review": _textEditingController.text,
                              "hasSpoilers": this.contieneSpoiler });
 
-    final _response = http.post(Uri.http(BACKEND_PATH_LOCAL, "movie/leaveReview"),
+    final _response = http.post(Uri.http(BACKEND_PATH_LOCAL, "${widget.category}/leaveReview"),
                       headers: { 'Content-type': 'application/json', 'Accept': 'application/json'},
                        body: body);
     _response.then((value) => Navigator.pop(context));
@@ -136,7 +138,7 @@ class _AddReviewState extends State<AddReview> {
             onPressed: () {
                 this.sendReview();
             },
-            child: Text('Agregar review '),
+            child: Text('Agregar review'),
           )
         ],
       )

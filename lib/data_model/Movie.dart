@@ -1,6 +1,7 @@
+import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'dart:convert';
+
 
 
 class ElementObject {
@@ -17,15 +18,15 @@ class Movie extends ElementObject {
 
     Movie({@required this.title, @required this.director, @required this.reviews, @required this.raiting, @required this.movieImage});
 
-    factory Movie.fromJson(Map<String, dynamic> movieJson) {
+    factory Movie.fromJson(Map<String, dynamic> movieJson)  {
       List<Review> movieReviews =  List<Review>.from(movieJson['reviews'].map((aMovieReviewJson) => Review.fromJson(aMovieReviewJson)));
-      Image movieBASE64Image = Image.memory(base64Decode(movieJson['imagen']));
+      Image img = Image.memory(base64Decode(movieJson['imagen']));
       return Movie(
         title: movieJson['title'],
         director: movieJson['director'],
         raiting: movieJson['raiting'],
         reviews: movieReviews,
-        movieImage: movieBASE64Image,
+        movieImage: img
       );
     }
 }

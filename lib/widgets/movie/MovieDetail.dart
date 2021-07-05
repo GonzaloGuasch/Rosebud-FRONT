@@ -72,7 +72,8 @@ class _MovieDetailState extends State<MovieDetail> {
             ),
           Container(
             child: LeaveReview(
-                    movieTitle: this.movie.title,
+                    ttile: this.movie.title,
+                    category: 'movie',
                     storage: widget.storage
                   )
           ),

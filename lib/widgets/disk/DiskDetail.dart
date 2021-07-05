@@ -4,10 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:localstorage/localstorage.dart';
 import 'package:rosebud_front/data_model/Disk.dart';
 import 'package:rosebud_front/widgets/movie/MovieReviewsFromUser.dart';
+import 'package:rosebud_front/widgets/review/LeaveReview.dart';
 
 import 'DiskDescriptionInfo.dart';
 import 'DiskPointReview.dart';
-import 'LeaveReviewDisk.dart';
 
 class DiskDetail extends StatefulWidget {
   final Disk disk;
@@ -61,8 +61,9 @@ class _DiskDetailState extends State<DiskDetail> {
               )
           ),
           Container(
-              child: LeaveReviewDisk(
-                  diskTitle: this.disk.title,
+              child: LeaveReview(
+                  ttile: this.disk.title,
+                  category: 'disk',
                   storage: widget.storage
               )
           ),
