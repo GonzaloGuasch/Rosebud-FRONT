@@ -1,5 +1,6 @@
 import 'package:feature_discovery/feature_discovery.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_icons/flutter_icons.dart';
 import 'package:localstorage/localstorage.dart';
 import 'package:rosebud_front/widgets/facade/ElementSearcher.dart';
 
@@ -32,70 +33,65 @@ class _HomeChoiceState extends State<HomeChoice> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Color(0xff1a1414),
       body: Center(
-          child:
-          Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text("ELEGI LA CATEGORIA",
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
-              DescribedFeatureOverlay(
-                featureId: 'feature1',
-                targetColor: Colors.white,
-                textColor: Colors.black,
-                backgroundColor: Colors.red.shade100,
-                contentLocation: ContentLocation.trivial,
-                title: Text(
-                  'Elegí la categoria',
-                  style: TextStyle(fontSize: 20.0),
-                ),
-                pulseDuration: Duration(seconds: 1),
-                enablePulsingAnimation: true,
-                overflowMode: OverflowMode.extendBackground,
-                openDuration: Duration(seconds: 1),
-                description: Text('Aca podes buscar \n las películas que ya viste y queres recordar '),
-                tapTarget: Icon(Icons.navigation),
-                child: IconButton(
-                  key: Key('MovieButton'),
-                  icon: Icon(Icons.movie, size: 50),
-                  tooltip: 'Movie section',
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) =>ElementSearcher(widget.storage, true, "Peliculas")),
-                    );
-                  },
-                ),
+          child: Padding(
+            padding: const EdgeInsets.only(top: 60),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Text("ROSEBUD APP", style: TextStyle(color: Color(0xffd5f971), fontSize: 30, fontWeight: FontWeight.w600)),
+                ButtonHome(widget.storage, "Movie section", true, "Peliculas", Icon(Ionicons.md_film, size: 120)),
+                ButtonHome(widget.storage, "Music section", false, "Discos", Icon(Ionicons.md_musical_notes, size: 100))
+            ],
             ),
-          DescribedFeatureOverlay(
-            featureId: 'feature2',
-            targetColor: Colors.white,
-            textColor: Colors.white,
-            backgroundColor: Colors.blue,
-            contentLocation: ContentLocation.below,
-            title: Text(
-              'También hay música!',
-              style: TextStyle(fontSize: 20.0),
-            ),
-            pulseDuration: Duration(seconds: 1),
-            enablePulsingAnimation: true,
-            overflowMode: OverflowMode.clipContent,
-            openDuration: Duration(seconds: 1),
-            description: Text('Guarda esos discos que escuchas \n una y otra vez!'),
-            tapTarget: Icon(Icons.menu),
-            child: IconButton(
-                  icon: Icon(Icons.music_note, size: 50),
-                  tooltip: 'Music section',
-                  onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => ElementSearcher(widget.storage, false, "Discos")),
-                      );
-                    },
-              ),
           )
+      ),
+    );
+  }
+}
+
+
+class ButtonHome extends StatelessWidget {
+  final LocalStorage storage;
+  final String section;
+  final bool isMovieCategory;
+  final String category;
+  final Icon icon;
+  ButtonHome(this.storage, this.section, this.isMovieCategory, this.category, this.icon);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: EdgeInsets.only(left: 30, top: 50, right: 30, bottom: 10),
+      height: 200,
+      width: 200,
+      child:IconButton(
+        icon: this.icon,
+        tooltip: this.section,
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => ElementSearcher(this.storage, this.isMovieCategory, this.category)),
+          );
+        },
+      ),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(10),
+            topRight: Radius.circular(10),
+            bottomLeft: Radius.circular(10),
+            bottomRight: Radius.circular(10)
+        ),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withOpacity(0.5),
+            spreadRadius: 5,
+            blurRadius: 7,
+            offset: Offset(0, 3), // changes position of shadow
+          ),
         ],
-          )
       ),
     );
   }
