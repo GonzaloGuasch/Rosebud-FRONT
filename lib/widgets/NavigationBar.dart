@@ -10,8 +10,7 @@ class NavigationBar extends StatelessWidget  {
   final LocalStorage storage;
   NavigationBar(this.storage);
 
-  PersistentTabController _controller = PersistentTabController(
-      initialIndex: 0);
+  PersistentTabController _controller = PersistentTabController(initialIndex: 0);
 
   List<Widget> _buildScreens() {
     return [
@@ -36,7 +35,7 @@ class NavigationBar extends StatelessWidget  {
       ),
       PersistentBottomNavBarItem(
         icon: Icon(Icons.person),
-        title: ("Settings"),
+        title: ("Perfil"),
         activeColorPrimary: CupertinoColors.black,
         inactiveColorPrimary: CupertinoColors.systemGrey,
       ),
@@ -72,7 +71,7 @@ class NavigationBar extends StatelessWidget  {
         curve: Curves.ease,
         duration: Duration(milliseconds: 200),
       ),
-      navBarStyle: NavBarStyle.style13, // Choose the nav bar style with this property.
+      navBarStyle: NavBarStyle.style6, // Choose the nav bar style with this property.
     );
   }
 }
