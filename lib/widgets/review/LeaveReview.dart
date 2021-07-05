@@ -11,7 +11,8 @@ class LeaveReview extends StatefulWidget {
   final String ttile;
   final String category;
   final LocalStorage storage;
-  const LeaveReview({Key key, this.ttile, this.storage, this.category}) : super(key: key);
+  final Function callback;
+  const LeaveReview({Key key, this.ttile, this.storage, this.category, this.callback}) : super(key: key);
 
   @override
   _LeaveReviewState createState() => _LeaveReviewState();
@@ -35,7 +36,7 @@ class _LeaveReviewState extends State<LeaveReview> {
                     onTap: () {
                       Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => widget.storage.getItem('username') != null ? AddReview(widget.ttile, widget.category, widget.storage) :  RegisterUserProfile(widget.storage))
+                          MaterialPageRoute(builder: (context) => widget.storage.getItem('username') != null ? AddReview(widget.ttile, widget.category, widget.storage, widget.callback) :  RegisterUserProfile(widget.storage))
                       );
                     },
                     child: Row(
@@ -55,7 +56,8 @@ class AddReview extends StatefulWidget {
   final String title;
   final String category;
   final LocalStorage storage;
-  AddReview(this.title, this.category, this.storage);
+  final Function callback;
+  AddReview(this.title, this.category, this.storage, this.callback);
   
   @override
   _AddReviewState createState() => _AddReviewState();
@@ -75,7 +77,7 @@ class _AddReviewState extends State<AddReview> {
     final _response = http.post(Uri.http(BACKEND_PATH_LOCAL, "${widget.category}/leaveReview"),
                       headers: { 'Content-type': 'application/json', 'Accept': 'application/json'},
                        body: body);
-    _response.then((value) => Navigator.pop(context));
+    _response.then((value) => {widget.callback(context)});
   }
 
   @override

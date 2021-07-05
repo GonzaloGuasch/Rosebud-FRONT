@@ -1,35 +1,50 @@
+import 'dart:convert';
+
 import 'package:flutter/cupertino.dart';
 import 'package:localstorage/localstorage.dart';
+import 'package:rosebud_front/constants/constants.dart';
 import 'package:rosebud_front/data_model/Movie.dart';
 import 'package:rosebud_front/widgets/review/ReviewCard.dart';
+import 'package:http/http.dart' as http;
 
-class MovieReviewsFromUser extends StatefulWidget {
-  final List<Review> movieReviews;
+class ReviewsFromUser extends StatefulWidget {
   final String movieTitle;
-  final  LocalStorage storage;
-  const MovieReviewsFromUser({Key key, this.movieTitle, this.movieReviews, this.storage}) : super(key: key);
+  final LocalStorage storage;
+  final String category;
+  const ReviewsFromUser({Key key, this.movieTitle, this.storage, this.category}) : super(key: key);
 
   @override
-  _MovieReviewsFromUserState createState() => _MovieReviewsFromUserState();
+  _ReviewsFromUserState createState() => _ReviewsFromUserState();
 }
 
-class _MovieReviewsFromUserState extends State<MovieReviewsFromUser> {
-  final List<Widget> reviewsWidget = [];
+class _ReviewsFromUserState extends State<ReviewsFromUser> {
+  List<Widget> reviewsWidget = [];
 
   @override
   void initState() {
     super.initState();
-    for(int i = 0; i < widget.movieReviews.length; i++) {
-          this.reviewsWidget.add(
+    this.drawReviews();
+  }
+
+  void drawReviews() async {
+    final _response = await http.get(Uri.http(BACKEND_PATH_LOCAL, "${widget.category}/reviewsOf/" + widget.movieTitle));
+    List reviewsOfMovie = jsonDecode(_response.body);
+    List<Review> movieResultList =  List<Review>.from(reviewsOfMovie.map((aReviewJSON) => Review.fromJson(aReviewJSON)));
+    List<Widget> reviews = [];
+    for(int i = 0; i < movieResultList.length; i++) {
+          reviews.add(
             ReviewCard(
               storage: widget.storage,
-              userCreate: widget.movieReviews[i].userCreate,
-              review: widget.movieReviews[i].review,
-              hasSpoilers: widget.movieReviews[i].hasSpoilers,
-              id: widget.movieReviews[i].id
+              userCreate: movieResultList[i].userCreate,
+              review: movieResultList[i].review,
+              hasSpoilers: movieResultList[i].hasSpoilers,
+              id: movieResultList[i].id
             )
           );
     }
+    setState(() {
+      this.reviewsWidget = reviews;
+    });
   }
 
   @override
@@ -57,7 +72,11 @@ class _MovieReviewsFromUserState extends State<MovieReviewsFromUser> {
             Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
-                children: this.reviewsWidget
+                children: this.reviewsWidget.isEmpty ?
+                                [Padding(padding: const EdgeInsets.only(left: 15, bottom: 20),
+                                    child: Text("No hay reviews todavia!",
+                                              style: TextStyle(fontSize: 28.0, color: Color(0xff9ea7ae))))] :
+                                this.reviewsWidget
             )
         ],
       ),

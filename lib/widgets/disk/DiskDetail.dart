@@ -22,6 +22,16 @@ class _DiskDetailState extends State<DiskDetail> {
   Disk disk;
   _DiskDetailState(this.disk);
 
+  void callback(context) {
+    setState(() {});
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(
+        builder: (context) => DiskDetail(widget.disk, widget.storage),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Material(
@@ -64,14 +74,15 @@ class _DiskDetailState extends State<DiskDetail> {
               child: LeaveReview(
                   ttile: this.disk.title,
                   category: 'disk',
-                  storage: widget.storage
+                  storage: widget.storage,
+                  callback: this.callback
               )
           ),
           Container(
-            child: MovieReviewsFromUser(
+            child: ReviewsFromUser(
                 movieTitle: this.disk.title,
-                movieReviews: this.disk.reviews,
-                storage: widget.storage
+                storage: widget.storage,
+                category: 'disk',
             ),
           )
         ],

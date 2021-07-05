@@ -33,6 +33,16 @@ class _MovieDetailState extends State<MovieDetail> {
     super.initState();
   }
 
+  void callback(context) {
+    setState(() {});
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(
+        builder: (context) => MovieDetail(widget.movie, widget.storage),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Material(
@@ -74,14 +84,15 @@ class _MovieDetailState extends State<MovieDetail> {
             child: LeaveReview(
                     ttile: this.movie.title,
                     category: 'movie',
-                    storage: widget.storage
+                    storage: widget.storage,
+                    callback: this.callback
                   )
           ),
           Container(
-            child: MovieReviewsFromUser(
+            child: ReviewsFromUser(
                     movieTitle: this.movie.title,
-                    movieReviews: this.movie.reviews,
-                    storage: widget.storage
+                    storage: widget.storage,
+                    category: 'movie',
             ),
           )
         ],
