@@ -59,10 +59,12 @@ class _UserFollowState extends State<UserFollow> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Color(0xff1a1414),
       appBar: AppBar(
-        iconTheme: IconThemeData(color: Colors.black),
-        title: widget.isFollowersOfUsers ? Text('Seguidores', style: TextStyle(color: Colors.black)) :  Text('Seguidos', style: TextStyle(color: Colors.black)),
-        backgroundColor: Colors.white,
+        shape: Border(bottom: BorderSide(color:Color(0xffd5f971), width: 2)),
+        iconTheme: IconThemeData(color: Color(0xffd5f971)),
+        title: widget.isFollowersOfUsers ? Text('Seguidores', style: TextStyle(fontWeight: FontWeight.bold, color: Color(0xffd5f971))) :  Text('Seguidos', style: TextStyle(fontWeight: FontWeight.bold, color: Color(0xffd5f971))),
+        backgroundColor: Color(0xff1a1414),
       ),
       body: Column(
         children: this.userFollow,
@@ -101,13 +103,13 @@ class _FollowerUserButtonState extends State<FollowerUserButton> {
   @override
   Widget build(BuildContext context) {
     return Container(
-        margin: const EdgeInsets.all(2.0),
-        padding: const EdgeInsets.only(top: 12, left: 3.0),
         height: 50,
         width: 388,
+        margin: const EdgeInsets.all(2.0),
+        padding: const EdgeInsets.only(top: 12, left: 3.0),
         decoration: BoxDecoration(
             border: Border(
-              bottom: BorderSide(color: Color(0xff33363b)),
+              bottom: BorderSide(color: Color(0xffd5f971)),
             )
         ),
         child: this.dejoDeSeguir ?
@@ -148,7 +150,7 @@ class DejarDeSeguirButtonm extends StatelessWidget {
                     MaterialPageRoute(builder: (context) => VisitUserProfile(this.usernameFollower, this.storage))
                 );
               },
-              child: Text(this.usernameFollower, style: TextStyle(fontSize: 20)),
+              child: Text(this.usernameFollower, style: TextStyle(fontSize: 20, color: Color(0xffd5f971))),
             )
         ),
         Padding(
@@ -158,7 +160,7 @@ class DejarDeSeguirButtonm extends StatelessWidget {
                 shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                     RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(7),
-                        side: BorderSide(color: Color(0xffe2e2e2))
+                        side: BorderSide(color: Color(0xffd5f971))
                     )
                 )
             ),
@@ -168,7 +170,7 @@ class DejarDeSeguirButtonm extends StatelessWidget {
                 this.callbackFunction();
               }
             },
-            child: Text('Dejar de seguir', style: TextStyle(color: Colors.black, fontWeight: FontWeight.w500)),
+            child: Text('Dejar de seguir', style: TextStyle(color: Color(0xffd5f971), fontWeight: FontWeight.w500)),
           ),
         )
       ],
@@ -197,7 +199,7 @@ class SeguirAButton extends StatelessWidget {
                     MaterialPageRoute(builder: (context) => VisitUserProfile(this.usernameFollower, this.storage))
                 );
               },
-          child: Text(this.usernameFollower, style: TextStyle(fontSize: 20)),
+          child: Text(this.usernameFollower, style: TextStyle(fontSize: 20, color: Color(0xffd5f971))),
           )
         ),
         Padding(

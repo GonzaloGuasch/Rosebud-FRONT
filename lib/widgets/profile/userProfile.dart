@@ -119,7 +119,7 @@ class _DataRowState extends State<DataRow> {
                   openDuration: Duration(seconds: 1),
                   description: Text('Hace click y mira la lista de quien te sigue'),
                   tapTarget: Icon(Icons.person),
-                  child:DataProfileGesture(username, userData.followers.toString(), 'seguidores', true, widget.storage, this.callbackButtonAction)),
+                  child: DataProfileGesture(username, userData.followers.toString(), 'seguidores', true, widget.storage, this.callbackButtonAction)),
                 DescribedFeatureOverlay(
                 featureId: 'seguidos',
                 targetColor: Colors.white,
