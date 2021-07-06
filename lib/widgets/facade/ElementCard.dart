@@ -22,7 +22,7 @@ class ElementCard extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Image(image: movie.movieImage.image, width: 80),
-            Text(movie.title, style: TextStyle(color: Colors.white, fontSize: 30)),
+            Text(movie.title, style: TextStyle(color: Color(0xffd5f971), fontSize: 30))
           ]
       );
     } else {
@@ -31,7 +31,7 @@ class ElementCard extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Image(image: disk.diskImage.image, width: 80),
-            Text(disk.title, style: TextStyle(color: Colors.white, fontSize: 30)),
+            Text(disk.title, style: TextStyle(color: Color(0xffd5f971), fontSize: 30)),
           ]
       );
     }

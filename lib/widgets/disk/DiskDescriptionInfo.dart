@@ -28,7 +28,7 @@ class _DiskDescriptionInfoState extends State<DiskDescriptionInfo> {
           children: [
             Row(
               children: [
-                Text(widget.diskTitle, style: TextStyle(fontWeight: FontWeight.bold, fontSize: 35.0, color: Colors.white)),
+                Text(widget.diskTitle, style: TextStyle(fontWeight: FontWeight.bold, fontSize: 35.0, color: Color(0xffec1fa2))),
                 DiskWatched(
                     storage: widget.storage,
                     diskTitle: widget.diskTitle
@@ -56,7 +56,7 @@ class _DiskDescriptionInfoState extends State<DiskDescriptionInfo> {
             ),
             Padding(
               padding: const EdgeInsets.only(top: 12.0, bottom: 20.0),
-              child: Text(widget.diskDescription, style: TextStyle(fontSize: 18.0, color: Colors.white)),
+              child: Text(widget.diskDescription, style: TextStyle(fontSize: 18.0, color: Color(0xffd5f971))),
             )
           ],
         ),

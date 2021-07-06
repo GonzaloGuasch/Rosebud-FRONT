@@ -44,24 +44,25 @@ class _ElementSearcherState extends State<ElementSearcher> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Color(0xff445565),
         appBar: AppBar(
-          backgroundColor: Color(0xff334454),
-          title: Text("BUSCADOR DE ${widget.categoryName.toUpperCase()}"),
+          iconTheme: IconThemeData(color: Color(0xffd5f971)),
+          backgroundColor: Color(0xff1a1414),
+          title: Text("BUSCADOR DE ${widget.categoryName.toUpperCase()}", style: TextStyle(color: Color(0xffd5f971))),
         ),
         body: Container(
-            color: Color(0xff334454),
+            color: Color(0xff1a1414),
             child: ListView(
               children: [
                 TextField(
                   key: Key('ElementInputSearch'),
-                  style: TextStyle(color: Colors.white),
+                  style: TextStyle(color: Color(0xffd5f971)),
                   textInputAction: TextInputAction.search,
                   onSubmitted: (value) {
                     makeSearch(value);
                   },
                   decoration: InputDecoration(
                     hintText: 'Titulo de la ${widget.categoryName}',
+                    hintStyle: TextStyle(fontSize: 20.0, color: Color(0xffec1fa2)),
                   ),
                 ),
                 this.createAllResults()

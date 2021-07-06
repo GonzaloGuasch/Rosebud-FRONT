@@ -31,7 +31,7 @@ class _MovieDescriptionInfoState extends State<MovieDescriptionInfo> {
             children: [
               Row(
                 children: [
-                  Text(this.movieTitle, style: TextStyle(fontWeight: FontWeight.bold, fontSize: 35.0, color: Colors.white)),
+                  Text(this.movieTitle, style: TextStyle(fontWeight: FontWeight.bold, fontSize: 35.0, color: Color(0xffec1fa2))),
                   widget.storage.getItem('username') != null ? MovieWatched(storage: widget.storage,
                                                                             movieTitle: this.movieTitle,
                                                                             username: widget.storage.getItem('username')['username']) : Text(""),
@@ -58,7 +58,7 @@ class _MovieDescriptionInfoState extends State<MovieDescriptionInfo> {
               ),
               Padding(
                 padding: const EdgeInsets.only(top: 12.0, bottom: 20.0),
-                child: Text(this.movieDescription, style: TextStyle(fontSize: 18.0, color: Colors.white)),
+                child: Text(this.movieDescription, style: TextStyle(fontSize: 18.0, color: Color(0xffd5f971))),
               )
             ],
           ),
@@ -102,7 +102,8 @@ class _MovieWatchedState extends State<MovieWatched> {
   Widget build(BuildContext context) {
     return Container(
       child:  IconButton(
-                icon: this.isInList ? Icon(Icons.check, color: Colors.green) : Icon(Icons.add, color: Colors.white),
+                icon: this.isInList ? Tooltip(message: "Peli vista", child: Icon(Icons.check, color: Colors.green)) :
+                                      Tooltip(message: "Agregar peli", child: Icon(Icons.add, color: Colors.white)),
                 onPressed: () {
                       var body = json.encode({"username": widget.username, "elementTitle": this.movieTitle});
                       final _response = http.post(Uri.http(BACKEND_PATH_LOCAL, "movie/addToWachtedList/"),

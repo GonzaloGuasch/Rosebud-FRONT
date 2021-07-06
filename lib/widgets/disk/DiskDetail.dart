@@ -35,7 +35,7 @@ class _DiskDetailState extends State<DiskDetail> {
   @override
   Widget build(BuildContext context) {
     return Material(
-      color: Color(0xff181b20),
+      color: Color(0xff1a1414),
       child: ListView(
         children: [
           Container(

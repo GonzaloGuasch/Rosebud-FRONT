@@ -12,7 +12,7 @@ class MovieUtil {
     final _response = await http.get(Uri.http(BACKEND_PATH_LOCAL, "movie/searchByTitle/" + movieName));
     List movieJsonList;
     List<ElementObject> movieResultList = [];
-    movieJsonList = jsonDecode(  _response.body);
+    movieJsonList = jsonDecode(_response.body);
     movieResultList =  List<ElementObject>.from(movieJsonList.map((aMovieJson) => Movie.fromJson(aMovieJson)));
 
     return movieResultList;

@@ -61,8 +61,8 @@ class _UserFollowState extends State<UserFollow> {
     return Scaffold(
       backgroundColor: Color(0xff1a1414),
       appBar: AppBar(
-        shape: Border(bottom: BorderSide(color:Color(0xffd5f971), width: 2)),
-        iconTheme: IconThemeData(color: Color(0xffd5f971)),
+        shape: Border(bottom: BorderSide(color: Color(0xffec1fa2), width: 2)),
+        iconTheme: IconThemeData(color: Color(0xffec1fa2)),
         title: widget.isFollowersOfUsers ? Text('Seguidores', style: TextStyle(fontWeight: FontWeight.bold, color: Color(0xffd5f971))) :  Text('Seguidos', style: TextStyle(fontWeight: FontWeight.bold, color: Color(0xffd5f971))),
         backgroundColor: Color(0xff1a1414),
       ),
@@ -105,11 +105,10 @@ class _FollowerUserButtonState extends State<FollowerUserButton> {
     return Container(
         height: 50,
         width: 388,
-        margin: const EdgeInsets.all(2.0),
-        padding: const EdgeInsets.only(top: 12, left: 3.0),
+        padding: const EdgeInsets.only(top: 20, left: 3),
         decoration: BoxDecoration(
             border: Border(
-              bottom: BorderSide(color: Color(0xffd5f971)),
+              bottom: BorderSide(color: Color(0xffec1fa2)),
             )
         ),
         child: this.dejoDeSeguir ?
