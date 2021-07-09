@@ -14,13 +14,13 @@ class Disk extends ElementObject {
 
   factory Disk.fromJson(Map<String, dynamic> diskJson) {
     List<Review> diskReview =  List<Review>.from(diskJson['reviews'].map((aMovieReviewJson) => Review.fromJson(aMovieReviewJson)));
-    Image movieBASE64Image = Image.memory(base64Decode(diskJson['imagen']));
+    Image img = Image.memory(base64Decode(diskJson['imagen']));
     return Disk(
       title: diskJson['title'],
       band: diskJson['band'],
       raiting: diskJson['raiting'],
       reviews: diskReview,
-      diskImage: movieBASE64Image,
+      diskImage: img,
     );
   }
 }
