@@ -41,8 +41,36 @@ class _HomeChoiceState extends State<HomeChoice> {
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 Text("ROSEBUD APP", style: TextStyle(color: Color(0xffd5f971), fontSize: 30, fontWeight: FontWeight.w600)),
-                ButtonHome(widget.storage, "Movie section", true, "Peliculas", Icon(Ionicons.md_film, size: 120)),
-                ButtonHome(widget.storage, "Music section", false, "Discos", Icon(Ionicons.md_musical_notes, size: 100))
+                DescribedFeatureOverlay(
+                  featureId: 'feature1',
+                  targetColor: Colors.white,
+                  textColor: Colors.black,
+                  backgroundColor: Colors.green.shade400,
+                  contentLocation: ContentLocation.trivial,
+                  title: Text("Elegí la categoria", style: TextStyle(fontSize: 25)),
+                  pulseDuration: Duration(seconds: 1),
+                  enablePulsingAnimation: true,
+                  barrierDismissible: false,
+                  overflowMode: OverflowMode.wrapBackground,
+                  openDuration: Duration(seconds: 1),
+                  description: Text("Podes buscar una película y guardarla en tu lista", style: TextStyle(fontSize: 20)),
+                  tapTarget: Icon(Icons.movie),
+                  child: ButtonHome(widget.storage, "Movie section", true, "Peliculas", Icon(Ionicons.md_film, size: 120))),
+                DescribedFeatureOverlay(
+                    featureId: 'feature2',
+                    targetColor: Colors.white,
+                    textColor: Colors.black,
+                    backgroundColor: Colors.red.shade300,
+                    contentLocation: ContentLocation.trivial,
+                    title: Text("También hay música!", style: TextStyle(fontSize: 25)),
+                    pulseDuration: Duration(seconds: 1),
+                    enablePulsingAnimation: true,
+                    barrierDismissible: false,
+                    overflowMode: OverflowMode.wrapBackground,
+                    openDuration: Duration(seconds: 1),
+                    description: Text("¿Escuchaste un disco y queres guardarlo?", style: TextStyle(fontSize: 20)),
+                    tapTarget: Icon(Icons.music_note),
+                    child: ButtonHome(widget.storage, "Music section", false, "Discos", Icon(Ionicons.md_musical_notes, size: 100)))
             ],
             ),
           )

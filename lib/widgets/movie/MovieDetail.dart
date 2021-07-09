@@ -23,13 +23,17 @@ class _MovieDetailState extends State<MovieDetail> {
 
   @override
   void initState() {
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      FeatureDiscovery.discoverFeatures(context,
-          <String>[
-            "adddMovie",
-          ]
-      );
-    });
+    bool visited = widget.storage.getItem("visited");
+    if(visited == null) {
+      WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+        FeatureDiscovery.discoverFeatures(context,
+            <String>[
+              "adddMovie",
+            ]
+        );
+        widget.storage.setItem("visited", true);
+      });
+    }
     super.initState();
   }
 
@@ -46,7 +50,7 @@ class _MovieDetailState extends State<MovieDetail> {
   @override
   Widget build(BuildContext context) {
     return Material(
-      color: Color(0xff181b20),
+      color: Color(0xff1a1414),
       child: ListView(
         children: [
           Container(
@@ -64,7 +68,7 @@ class _MovieDetailState extends State<MovieDetail> {
                   openDuration: Duration(seconds: 1),
                   description: Text('Agrega la peli a tu lista de vistas, deja tu puntuación si te gusto y lee las reviews de otrxs usuarixs!'),
                   tapTarget: Icon(Icons.movie),
-                    child: Image(image: this.movie.movieImage.image)
+                  child: Image(image: this.movie.movieImage.image)
           )),
           Container(
           child: MovieDescriptionInfo(
