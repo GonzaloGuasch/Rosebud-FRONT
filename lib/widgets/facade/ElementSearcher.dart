@@ -1,3 +1,4 @@
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:localstorage/localstorage.dart';
@@ -5,6 +6,7 @@ import 'package:rosebud_front/data_model/Movie.dart';
 import 'package:rosebud_front/utils/DiskUtil.dart';
 import 'package:rosebud_front/utils/MovieUtils.dart';
 
+import 'LoadingElement.dart';
 
 class ElementSearcher extends StatefulWidget {
   final LocalStorage storage;
@@ -18,17 +20,20 @@ class ElementSearcher extends StatefulWidget {
 
 class _ElementSearcherState extends State<ElementSearcher> {
   List<ElementObject> elementsResult = [];
+  bool displaySkeleton = false;
 
   Future<void> makeSearch(String elementName) async {
     if(widget.isMovieElement) {
        List<ElementObject> movies = await MovieUtil.makeMovieResult(elementName);
        setState(()  {
          elementsResult = movies;
+         this.displaySkeleton = false;
        });
     } else {
         List disks = await DiskUtil.makeDiskResult(elementName);
         setState(()  {
           elementsResult = disks;
+          this.displaySkeleton = false;
         });
     }
   }
@@ -39,7 +44,6 @@ class _ElementSearcherState extends State<ElementSearcher> {
     }
     return DiskUtil.createAllResults(this.elementsResult, widget.storage);
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -58,6 +62,9 @@ class _ElementSearcherState extends State<ElementSearcher> {
                   style: TextStyle(color: Color(0xffd5f971)),
                   textInputAction: TextInputAction.search,
                   onSubmitted: (value) {
+                    setState(() {
+                      this.displaySkeleton = true;
+                    });
                     makeSearch(value);
                   },
                   decoration: InputDecoration(
@@ -65,7 +72,7 @@ class _ElementSearcherState extends State<ElementSearcher> {
                     hintStyle: TextStyle(fontSize: 20.0, color: Color(0xffec1fa2)),
                   ),
                 ),
-                this.createAllResults()
+                this.displaySkeleton ? LoadingElement(): this.createAllResults()
               ],
             )
         )

@@ -25,6 +25,7 @@ dependencies:
     sdk: flutter
   http: 0.13.1
   persistent_bottom_nav_bar: any
+  flutter_skeleton: ^0.1.0+1
 
 
   # The following adds the Cupertino Icons font to your application.
@@ -35,6 +36,7 @@ dependencies:
   feature_discovery: ^0.14.0
   localstorage: ^4.0.0+1
   flutter_icons: ^1.1.0
+  shimmer: ^2.0.0
 
 dev_dependencies:
   integration_test:
