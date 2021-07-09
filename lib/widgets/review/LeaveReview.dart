@@ -138,7 +138,9 @@ class _AddReviewState extends State<AddReview> {
               foregroundColor: MaterialStateProperty.all<Color>(Colors.blue),
             ),
             onPressed: () {
-                this.sendReview();
+               if(_textEditingController.text.isNotEmpty) {
+                 this.sendReview();
+               }
             },
             child: Text('Agregar review'),
           )

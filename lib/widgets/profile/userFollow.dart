@@ -208,7 +208,7 @@ class SeguirAButton extends StatelessWidget {
                 shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                     RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(7),
-                        side: BorderSide(color: Color(0xffe2e2e2))
+                        side: BorderSide(color: Color(0xffd5f971))
                     )
                 )
             ),
@@ -216,7 +216,7 @@ class SeguirAButton extends StatelessWidget {
               final response = http.post(Uri.http(BACKEND_PATH_LOCAL, "user/seguirA/${username}/${usernameFollower}"));
               response.then(this.callbackFunction());
             },
-            child: Text('Seguir', style: TextStyle(color: Colors.black, fontWeight: FontWeight.w500)),
+            child: Text('Seguir', style: TextStyle(color: Color(0xffd5f971), fontWeight: FontWeight.w500)),
           ),
         )
       ],

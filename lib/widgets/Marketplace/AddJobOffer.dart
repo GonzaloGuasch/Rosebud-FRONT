@@ -2,18 +2,23 @@ import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:localstorage/localstorage.dart';
 import 'package:rosebud_front/constants/constants.dart';
-import 'package:rosebud_front/utils/utils.dart';
 import 'package:select_form_field/select_form_field.dart';
 import 'package:http/http.dart' as http;
 
+import 'Marketplace.dart';
+
 class NewJobOfferForm extends StatefulWidget {
+  final String usernameCreator;
+  final LocalStorage localStorage;
+  NewJobOfferForm(this.usernameCreator, this.localStorage);
+
   @override
   _NewJobOfferFormState createState() => _NewJobOfferFormState();
 }
 
 class _NewJobOfferFormState extends State<NewJobOfferForm> {
-  final _formKey = GlobalKey<FormState>();
   final List<Map<String, dynamic>> _locationItems = [
     {
       'value': 'buenosAires',
@@ -104,125 +109,145 @@ class _NewJobOfferFormState extends State<NewJobOfferForm> {
     {
       'value': 'NoRemunerada',
       'label': 'No remunerada',
-      'icon': Icon(Icons.stop),
     },
     {
       'value': 'PagoSegunGanancias',
       'label': 'Pago segun ganancias',
-      'icon': Icon(Icons.fiber_manual_record),
       'textStyle': TextStyle(color: Colors.red),
     },
     {
       'value': 'PagoFijo',
       'label': 'Pago fijo',
-      'icon': Icon(Icons.grade),
+
     },
     {
       'value': 'PagoConReel',
       'label': 'Pago con reel',
-      'icon': Icon(Icons.grade),
     },
   ];
-
+  final _formKey = GlobalKey<FormState>();
   final tituloTextController = TextEditingController();
   final descripcionTextController = TextEditingController();
   final locacionTextController = TextEditingController();
   final selectTextController = TextEditingController();
   final durationTextController = TextEditingController();
+  String category = 'Peliculas';
+
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: Form(
-        key: _formKey,
-        child: Padding(
-          padding: const EdgeInsets.only(top: 55.0),
-          child: Column(
-            children: [
-              Padding(
-                padding: const EdgeInsets.only(right: 350),
-                child: IconButton(
-                    icon: const Icon(Icons.arrow_back),
+        backgroundColor: Color(0xff1a1414),
+        appBar: AppBar(
+          iconTheme: IconThemeData(color: Color(0xffd5f971)),
+          backgroundColor: Color(0xff1a1414),
+          title: Text("Agrega tu nueva propuesta!", style: TextStyle(color: Color(0xffd5f971))),
+        ),
+        body: ListView(
+          children: [Form(
+            key: _formKey,
+            child: Column(
+                children: [
+                  TextFormField(
+                    style: TextStyle(fontSize: 18, color: Color(0xffd5f971)),
+                    controller: tituloTextController,
+                    decoration: const InputDecoration(
+                      hintText: 'Busca un titulo llamativo',
+                      labelText: 'Titulo oferta',
+                      labelStyle: TextStyle(color: Color(0xffec1fa2)),
+                    ),
+                    // ignore: missing_return
+                    validator: (value) { if (value == null || value.isEmpty) { return 'No dejes el campo vacio'; }
+                    },
+                  ),
+                  TextFormField(
+                    maxLines: 2,
+                    style: TextStyle(fontSize: 18, color: Color(0xffd5f971)),
+                    controller: descripcionTextController,
+                    decoration: const InputDecoration(
+                      hintText: 'Ponele una descripcion copada',
+                      labelText: 'Descripcion oferta',
+                      labelStyle: TextStyle(color: Color(0xffec1fa2)),
+                    ),
+                    // ignore: missing_return
+                    validator: (value) { if (value == null || value.isEmpty) { return 'No dejes el campo vacio'; }
+                    },
+                  ),
+                  SelectFormField(
+                      style: TextStyle(fontSize: 18, color: Color(0xffd5f971)),
+                      controller: durationTextController,
+                      type: SelectFormFieldType.dropdown,
+                      items: _durationItems,
+                      labelText: 'Duracion en semanas',
+                      // ignore: missing_return
+                      validator: (value) { if (value == null || value.isEmpty) { return 'Falta elegir la duracion'; } }
+                  ),
+                  SelectFormField(
+                      style: TextStyle(fontSize: 18, color: Color(0xffd5f971)),
+                      controller: locacionTextController,
+                      type: SelectFormFieldType.dropdown,
+                      items: _locationItems,
+                      labelText: 'Locacion de propuesta',
+                      // ignore: missing_return
+                      validator: (value) { if (value == null || value.isEmpty) { return 'Falta elegir la locacion'; } }
+                  ),
+                  SelectFormField(
+                    style: TextStyle(fontSize: 18, color: Color(0xffd5f971)),
+                    controller: selectTextController,
+                    type: SelectFormFieldType.dropdown,
+                    items: _items,
+                    labelText: 'Tipo de remuneracion',
+                    onChanged: (val) => print(val),
+                    onSaved: (val) => print(val),
+                    // ignore: missing_return
+                    validator: (value) { if (value == null || value.isEmpty) { return 'Falta elegir la remuneracion'; } }
+                  ),
+                DropdownButton<String>(
+                  value: this.category,
+                  iconSize: 24,
+                  elevation: 16,
+                  style: const TextStyle(color: Colors.deepPurple),
+                  underline: Container(
+                    height: 2,
+                    color: Colors.deepPurpleAccent,
+                  ),
+                  onChanged: (String newCategorySelected) {
+                    setState(() {
+                      this.category = newCategorySelected;
+                    });
+                  },
+                  items: <String>['Musica', 'Peliculas'].map<DropdownMenuItem<String>>((String value) {
+                    return DropdownMenuItem<String>(
+                      value: value,
+                      child: Text(value),
+                    );
+                  }).toList(),
+                ),
+                  ElevatedButton(
                     onPressed: () {
-                      Navigator.pop(context);
-                    }),
-              ),
-              TextFormField(
-                controller: tituloTextController,
-                decoration: const InputDecoration(
-                  icon: Icon(Icons.person),
-                  hintText: 'Ponele un titulo copado',
-                  labelText: 'Titulo oferta',
-                ),
-                // ignore: missing_return
-                validator: (value) { if (value == null || value.isEmpty) { return 'No dejes el campo vacio'; }
-                },
-              ),
-              TextFormField(
-                maxLines: 2,
-                controller: descripcionTextController,
-                decoration: const InputDecoration(
-                  icon: Icon(Icons.person),
-                  hintText: 'Ponele una descripcion copada',
-                  labelText: 'Descripcion oferta',
-                ),
-                // ignore: missing_return
-                validator: (value) { if (value == null || value.isEmpty) { return 'No dejes el campo vacio'; }
-                },
-              ),
-              SelectFormField(
-                  controller: durationTextController,
-                  type: SelectFormFieldType.dropdown,
-                  items: _durationItems,
-                  icon: Icon(Icons.person),
-                  labelText: 'Duracion en semanas',
-                  // ignore: missing_return
-                  validator: (value) { if (value == null || value.isEmpty) { return 'Falta elegir la duracion'; } }
-              ),
-              SelectFormField(
-                  controller: locacionTextController,
-                  type: SelectFormFieldType.dropdown,
-                  items: _locationItems,
-                  icon: Icon(Icons.person),
-                  labelText: 'Locacion de propuesta',
-                  // ignore: missing_return
-                  validator: (value) { if (value == null || value.isEmpty) { return 'Falta elegir la locacion'; } }
-              ),
-              SelectFormField(
-                controller: selectTextController,
-                type: SelectFormFieldType.dropdown,
-                items: _items,
-                icon: Icon(Icons.person),
-                labelText: 'Tipo de remuneracion',
-                onChanged: (val) => print(val),
-                onSaved: (val) => print(val),
-                // ignore: missing_return
-                validator: (value) { if (value == null || value.isEmpty) { return 'Falta elegir la remuneracion'; } }
-              ),
-              ElevatedButton(
-                onPressed: () {
-                  if (_formKey.currentState.validate()) {
-                    final _response = http.post(Uri.http(BACKEND_PATH_LOCAL, "jobOffer/create"),
-                                                headers: { 'Content-type': 'application/json', 'Accept': 'application/json'},
-                                                body:  json.encode({'userAuthor': 'user_cuatro',
-                                                                    'description': descripcionTextController.text,
-                                                                    'title': tituloTextController.text,
-                                                                    'remuneration': selectTextController.text,
-                                                                    'location': locacionTextController.text,
-                                                                    'durationInWeeks': durationTextController.text,
-                                                                    'linkReference': 'asdasd'}));
-                    _response.then((v) => {
-                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: DialogoUploadOffer()))});
-                  }
-                  //todo
-                  //ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: DialogUploadOfferError()));
-                },
-                child: Text('Submit'),
-              ),
+                      if (_formKey.currentState.validate()) {
+                        final _response = http.post(Uri.http(BACKEND_PATH_LOCAL, "jobOffer/create"),
+                                                    headers: { 'Content-type': 'application/json', 'Accept': 'application/json'},
+                                                    body:  json.encode({'userAuthor': widget.usernameCreator,
+                                                                        'description': descripcionTextController.text,
+                                                                        'title': tituloTextController.text,
+                                                                        'remuneration': selectTextController.text,
+                                                                        'location': locacionTextController.text,
+                                                                        'durationInWeeks': durationTextController.text,
+                                                                        'category': this.category}));
+                        _response.then((v) => {
+                            Navigator.push(
+                            context,
+                              MaterialPageRoute(builder: (context) => MarketPlace(widget.localStorage)),
+                            )
+                        });
+                      }
+                    },
+                    child: Text('Submit'),
+                  ),
             ],
           ),
-        ),
-      )
+        )])
     );
     }
 }

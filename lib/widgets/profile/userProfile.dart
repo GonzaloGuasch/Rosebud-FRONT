@@ -95,7 +95,10 @@ class _DataRowState extends State<DataRow> {
   @override
   Widget build(BuildContext context) {
     final _value = this.userDataAsync();
-   String username = widget.storage.getItem('username')['username'];
+    String username = "";
+    if(widget.storage.getItem('username') != null) {
+      username = widget.storage.getItem('username')['username'];
+    }
     return SizedBox(
       child: FutureBuilder<String>(
           future: _value,
@@ -140,7 +143,7 @@ class _DataRowState extends State<DataRow> {
                   tooltip: 'Logout',
                   onPressed: () {
                     setState(() {
-                        widget.storage.clear();
+                      widget.storage.clear();
                         Navigator.push(
                           context,
                           MaterialPageRoute(builder: (context) =>  UserProfile(widget.storage)),
@@ -173,7 +176,7 @@ class UserProfile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return this.storage.getItem('username') != null ?
+      return this.storage.getItem('username') != null ?
     Scaffold(
       backgroundColor: Color(0xff1a1414),
       body: Padding(
