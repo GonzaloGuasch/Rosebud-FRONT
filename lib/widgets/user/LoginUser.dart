@@ -34,8 +34,11 @@ class _LoginUserState extends State<LoginUser> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: const Text('Inicia sesion'),
+          backgroundColor: Color(0xff1a1414),
+          iconTheme: IconThemeData(color: Color(0xffd5f971)),
+          title: const Text('Inicia sesion', style: TextStyle(color: Color(0xffd5f971))),
         ),
+        backgroundColor: Color(0xff1a1414),
         body: Padding(
           padding: const EdgeInsets.only(left: 4),
           child: Form(
@@ -44,10 +47,12 @@ class _LoginUserState extends State<LoginUser> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 TextFormField(
+                  style: TextStyle(fontSize: 18, color: Color(0xffd5f971)),
                   controller: emialController,
                   decoration: const InputDecoration(
                     hintText: 'Introduci tu email',
                     labelText: 'Email',
+                    labelStyle: TextStyle(color: Color(0xffec1fa2)),
                   ),
                   validator: (value) {
                     if (value == null || value.isEmpty || !RegExp(r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$').hasMatch(value)) {
@@ -57,11 +62,13 @@ class _LoginUserState extends State<LoginUser> {
                   },
                 ),
                 TextFormField(
+                  style: TextStyle(fontSize: 18, color: Color(0xffd5f971)),
                   controller: passwordController,
                   obscureText: true,
                   decoration: const InputDecoration(
                     hintText: 'Introduci tu contraseña',
                     labelText: 'Contraseña',
+                    labelStyle: TextStyle(color: Color(0xffec1fa2)),
                   ),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
@@ -73,6 +80,7 @@ class _LoginUserState extends State<LoginUser> {
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 16.0),
                   child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(primary: Colors.teal),
                     onPressed: () {
                       if(_formKey.currentState.validate()) {
                         var body =  json.encode({"email":  emialController.text,
@@ -86,7 +94,7 @@ class _LoginUserState extends State<LoginUser> {
 
                       }
                     },
-                    child: Text('Submit'),
+                    child: Text('Submit', style: TextStyle(fontSize: 20)),
                   ),
                 ),
               ],

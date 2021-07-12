@@ -46,7 +46,7 @@ class _MarketPlaceState extends State<MarketPlace> {
    void updateJobsOffer(List<JobOffer> jobsOffers) {
     List<Widget> newJobsOffer = [];
     for(int i = 0; i < jobsOffers.length; i++) {
-        Widget offer = JobOfferCard(jobsOffers[i]);
+        Widget offer = JobOfferCard(jobsOffers[i], widget.storage);
         newJobsOffer.add(offer);
     }
     if (!mounted) return;
@@ -102,7 +102,7 @@ class _MarketPlaceState extends State<MarketPlace> {
               description: Text("¿Sos artista amateur? Tenemos propuestas de estudiantes \n si buscas un trabajo formal también hay proyectos que apuntan a festivales. \n Recorda que se buscan actores/actrices, directoras/es, editores/as. Siempre viene bien una mano extra ;) "),
               tapTarget: Icon(Icons.work),
               child: Column(
-                  children: this.jobsOffer,
+                  children: this.jobsOffer.length == 0 ? [JobOfferNoResult()] : this.jobsOffer,
               ))
         ],
       )

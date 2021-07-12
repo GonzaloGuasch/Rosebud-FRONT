@@ -211,27 +211,28 @@ class RegisterUserProfile extends StatelessWidget {
     }
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Inicia sesion/registrate'),
-                     backgroundColor: Color(0xff0017ff)),
-      backgroundColor: Color(0xff16086c),
+      appBar: AppBar(title: const Text('Inicia sesion/registrate', style: TextStyle(color: Color(0xffd5f971))),
+                     backgroundColor: Color(0xff1a1414),
+                     iconTheme: IconThemeData(color: Color(0xffd5f971))),
+      backgroundColor: Color(0xff1a1414),
       body: Padding(
-        padding: const EdgeInsets.only(top: 60),
+        padding: const EdgeInsets.only(top: 50),
         child: Container(
             child: Column(
               children: [
                   Padding(
                     padding: const EdgeInsets.only(bottom: 13),
-                    child: Text('Primero es necesario que te registres o logees ',
+                    child: Text('Registrate/ingresa para ver mas!',
                                 textAlign: TextAlign.center,
-                                style: TextStyle(color: Colors.white, fontSize: 30, fontWeight: FontWeight.w500)),
+                                style: TextStyle(color: Color(0xffec1fa2), fontSize: 30, fontWeight: FontWeight.w500)),
                   ),
                 SizedBox(
                   width: 280,
                   height: 50,
                   child:TextButton(
                           style: ButtonStyle(
-                                  backgroundColor: MaterialStateProperty.all<Color>(Color(0xfffdd94d)),
-                                  foregroundColor: MaterialStateProperty.all<Color>(Color(0xff806d27))),
+                              backgroundColor: MaterialStateProperty.all<Color>(Colors.teal),
+                              foregroundColor: MaterialStateProperty.all<Color>(Colors.white)),
                           child: Text('Login', style: TextStyle(fontSize: 17, fontWeight: FontWeight.w500)),
                           onPressed: () {
                             Navigator.push(
@@ -248,8 +249,8 @@ class RegisterUserProfile extends StatelessWidget {
                     height: 50,
                     child:TextButton(
                       style: ButtonStyle(
-                          backgroundColor: MaterialStateProperty.all<Color>(Color(0xff81dfc5)),
-                          foregroundColor: MaterialStateProperty.all<Color>(Color(0xff3c826e))),
+                          backgroundColor: MaterialStateProperty.all<Color>(Colors.teal),
+                          foregroundColor: MaterialStateProperty.all<Color>(Colors.white)),
                       child: Text('Register', style: TextStyle(fontSize: 17, fontWeight: FontWeight.w500)),
                       onPressed: () {
                         Navigator.push(

@@ -29,10 +29,9 @@ class _DiskDescriptionInfoState extends State<DiskDescriptionInfo> {
             Row(
               children: [
                 Text(widget.diskTitle, style: TextStyle(fontWeight: FontWeight.bold, fontSize: 35.0, color: Color(0xffec1fa2))),
-                DiskWatched(
-                    storage: widget.storage,
-                    diskTitle: widget.diskTitle
-                ),
+                widget.storage.getItem('username') != null ?  DiskWatched(
+                                                                  storage: widget.storage,
+                                                                  diskTitle: widget.diskTitle) : Text(""),
               ],
             ),
             Padding(
@@ -85,7 +84,11 @@ class _DiskWatchedState extends State<DiskWatched> {
   }
 
   void updateButtonIcon() async {
-    String username = widget.storage.getItem('username')['username'];
+    String username = "";
+    if(widget.storage.getItem('username') != null) {
+      username = widget.storage.getItem('username')['username'];
+    }
+
     final _isInList = await http.get(Uri.http(BACKEND_PATH_LOCAL, "user/isDiskInList/${widget.diskTitle}/${username}"));
     if(_isInList.statusCode == 200) {
       setState(()  {
@@ -96,7 +99,10 @@ class _DiskWatchedState extends State<DiskWatched> {
 
   @override
   Widget build(BuildContext context) {
-    String username = widget.storage.getItem('username')['username'];
+    String username = "";
+    if(widget.storage.getItem('username') != null) {
+      username = widget.storage.getItem('username')['username'];
+    }
     return Container(
       child:  IconButton(
           icon: this.isInList ? Icon(Icons.check, color: Colors.green) : Icon(Icons.add, color: Colors.white),
