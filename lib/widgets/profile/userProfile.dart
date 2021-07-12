@@ -86,8 +86,12 @@ class _DataRowState extends State<DataRow> {
   }
 
   Future<String> userDataAsync() async {
-    String username = widget.storage.getItem('username')['username'];
-    final _userData = await http.get(Uri.http(BACKEND_PATH_LOCAL, 'user/info/${username}' ));
+    String username = " ";
+    if(widget.storage.getItem('username') != null) {
+       username = widget.storage.getItem('username')['username'];
+    }
+
+    final _userData = await http.get(Uri.http(BACKEND_PATH_LOCAL, 'user/info/$username' ));
     return _userData.body;
   }
 
@@ -107,7 +111,10 @@ class _DataRowState extends State<DataRow> {
             if (snapshot.hasData) {
               var userData = UserData.fromJson(jsonDecode(snapshot.data));
               children = [
-                Text(username, style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold, color: Color(0xffd5f971))),
+                Padding(
+                  padding: const EdgeInsets.only(top: 23),
+                  child: Text(username, style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold, color: Color(0xffd5f971))),
+                ),
                 DescribedFeatureOverlay(
                   featureId: 'seguidores',
                   targetColor: Colors.white,
@@ -176,7 +183,7 @@ class UserProfile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-      return this.storage.getItem('username') != null ?
+   return this.storage.getItem('username') != null ?
     Scaffold(
       backgroundColor: Color(0xff1a1414),
       body: Padding(
