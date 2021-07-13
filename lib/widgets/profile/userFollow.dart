@@ -90,7 +90,11 @@ class _FollowerUserButtonState extends State<FollowerUserButton> {
   _FollowerUserButtonState(this.dejoDeSeguir);
 
   void updateDejoDeSeguir() {
-      widget.callback();
+    if(!mounted){ return; }
+    setState(() {
+      dejoDeSeguir = true;
+    });
+    widget.callback();
   }
 
   void updateEmpezoASeguir() {
@@ -98,6 +102,7 @@ class _FollowerUserButtonState extends State<FollowerUserButton> {
     setState(() {
       dejoDeSeguir = false;
     });
+    widget.callback();
   }
 
   @override
@@ -213,7 +218,7 @@ class SeguirAButton extends StatelessWidget {
                 )
             ),
             onPressed: () {
-              final response = http.post(Uri.http(BACKEND_PATH_LOCAL, "user/seguirA/${username}/${usernameFollower}"));
+              final response = http.post(Uri.http(BACKEND_PATH_LOCAL, "user/seguirA/${usernameFollower}/${username}"));
               response.then(this.callbackFunction());
             },
             child: Text('Seguir', style: TextStyle(color: Color(0xffd5f971), fontWeight: FontWeight.w500)),
