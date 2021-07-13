@@ -9,8 +9,9 @@ class MovieDescriptionInfo extends StatefulWidget {
   final String movieTitle;
   final String movieDirector;
   final String movieDescription;
+  final int movieYear;
   final LocalStorage storage;
-  const MovieDescriptionInfo({Key key, this.movieTitle, this.movieDirector, this.movieDescription, this.storage}) : super(key: key);
+  const MovieDescriptionInfo({Key key, this.movieTitle, this.movieDirector, this.movieDescription, this.storage, this.movieYear}) : super(key: key);
   @override
   _MovieDescriptionInfoState createState() => _MovieDescriptionInfoState(this.movieTitle, this.movieDirector, this.movieDescription);
 }
@@ -49,7 +50,7 @@ class _MovieDescriptionInfoState extends State<MovieDescriptionInfo> {
               ),
               Row(
                 children: [
-                  Text("1984", style: TextStyle(fontSize: 20.0, color: Color(0xff9ea7ae))),
+                  Text(widget.movieYear.toString(), style: TextStyle(fontSize: 20.0, color: Color(0xff9ea7ae))),
                   Padding(
                     padding: const EdgeInsets.only(left: 15.0),
                     child: Text("108 mins", style: TextStyle(fontSize: 20.0, color: Color(0xff9ea7ae))),

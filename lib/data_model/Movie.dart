@@ -12,17 +12,28 @@ class ElementObject {
 class Movie extends ElementObject {
   final String title;
   final String director;
+  final int year;
+  final String description;
   int raiting;
   final List<Review> reviews;
   final Image movieImage;
 
-    Movie({@required this.title, @required this.director, @required this.reviews, @required this.raiting, @required this.movieImage});
+
+    Movie({@required this.title,
+          @required this.director,
+          @required this.year,
+          @required this.description,
+          @required this.reviews,
+          @required this.raiting,
+          @required this.movieImage});
 
     factory Movie.fromJson(Map<String, dynamic> movieJson)  {
       List<Review> movieReviews =  List<Review>.from(movieJson['reviews'].map((aMovieReviewJson) => Review.fromJson(aMovieReviewJson)));
       Image img = Image.memory(base64Decode(movieJson['imagen']));
       return Movie(
         title: movieJson['title'],
+        description: movieJson['description'],
+        year: movieJson['year'],
         director: movieJson['director'],
         raiting: movieJson['raiting'],
         reviews: movieReviews,

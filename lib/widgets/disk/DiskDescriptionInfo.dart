@@ -11,7 +11,8 @@ class DiskDescriptionInfo extends StatefulWidget {
   final String diskTitle;
   final String diskBand;
   final String diskDescription;
-  DiskDescriptionInfo({this.storage, this.diskBand, this.diskDescription, this.diskTitle});
+  final int diskYear;
+  DiskDescriptionInfo({this.storage, this.diskBand, this.diskDescription, this.diskTitle, this.diskYear});
 
   @override
   _DiskDescriptionInfoState createState() => _DiskDescriptionInfoState();
@@ -46,7 +47,7 @@ class _DiskDescriptionInfoState extends State<DiskDescriptionInfo> {
             ),
             Row(
               children: [
-                Text("1984", style: TextStyle(fontSize: 20.0, color: Color(0xff9ea7ae))),
+                Text(widget.diskYear.toString(), style: TextStyle(fontSize: 20.0, color: Color(0xff9ea7ae))),
                 Padding(
                   padding: const EdgeInsets.only(left: 15.0),
                   child: Text("108 mins", style: TextStyle(fontSize: 20.0, color: Color(0xff9ea7ae))),

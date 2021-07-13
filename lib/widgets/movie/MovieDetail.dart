@@ -75,7 +75,8 @@ class _MovieDetailState extends State<MovieDetail> {
                       storage: widget.storage,
                       movieTitle: this.movie.title,
                       movieDirector: this.movie.director,
-                      movieDescription: 'A human soldier is sent from 2029 to 1984 to stop an almost indestructible cyborg killing machine, sent from the same year, which has been programmed to execute a young woman whose unborn son is the key to humanitys future salvation.',
+                      movieDescription: this.movie.description,
+                      movieYear: this.movie.year
                 ),
           ),
           Container(

@@ -60,7 +60,9 @@ class _DiskDetailState extends State<DiskDetail> {
               storage: widget.storage,
               diskTitle: this.disk.title,
               diskBand: this.disk.band,
-              diskDescription: 'A human soldier is sent from 2029 to 1984 to stop an almost indestructible cyborg killing machine, sent from the same year, which has been programmed to execute a young woman whose unborn son is the key to humanitys future salvation.',
+              diskDescription: this.disk.description,
+              diskYear: this.disk.year
+
             ),
           ),
 
