@@ -83,22 +83,22 @@ class _AddReviewState extends State<AddReview> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-     backgroundColor: Color(0xff181b20),
+     backgroundColor: Color(0xff1a1414),
       appBar: AppBar(
-        backgroundColor: Color(0xff181b20),
-        title: const Text('Deja tu review!'),
+        backgroundColor: Color(0xff1a1414),
+        title: const Text('Deja tu review!', style: TextStyle(color: Color(0xffd5f971))),
+        iconTheme: IconThemeData(color: Color(0xffd5f971))
       ),
-      body: Column(
+      body: Container(
+        color: Color(0xff1a1414),
+        child: Column(
         children: <Widget>[
           Card(
             color: Color(0xff181b20),
-            child: new TextField(
+            child: TextField(
+              style: TextStyle(color: Color(0xffec1fa2)),
               controller: _textEditingController,
               maxLines: 10,
-              decoration: InputDecoration(
-                labelStyle: TextStyle(color: Colors.white),
-                  hintText: "Deja tu review",
-              ),
             ),
           ),
           Row(
@@ -109,8 +109,8 @@ class _AddReviewState extends State<AddReview> {
                       padding: EdgeInsets.only(top: 1, right: 1, left: 1, bottom: 1),
                       decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(100),
-                      border: Border.all(width: 2, color: Colors.white)),
-                      child: IconButton(icon: Icon(Icons.check, size: 20.0, color: Colors.white),
+                      border: Border.all(width: 2, color: Color(0xffd5f971))),
+                      child: IconButton(icon: Icon(Icons.check, size: 20.0, color: Color(0xffd5f971)),
                               onPressed: () {
                                   setState(() {
                                     this.contieneSpoiler = !this.contieneSpoiler;
@@ -122,30 +122,28 @@ class _AddReviewState extends State<AddReview> {
                       padding: EdgeInsets.only(top: 1, right: 1, left: 1, bottom: 1),
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(100),
-                          border: Border.all(width: 2, color: Colors.white)),
-                      child: IconButton(icon: Icon(Icons.clear, size: 20.0, color: Colors.white),
+                          border: Border.all(width: 2, color: Color(0xffd5f971))),
+                      child: IconButton(icon: Icon(Icons.clear, size: 20.0, color: Color(0xffd5f971)),
                           onPressed: () {
                             setState(() {
                               this.contieneSpoiler = !this.contieneSpoiler;
                             });
                           })
                   ),
-              Text("Contiene spoiler", style: TextStyle(color: Colors.white, fontSize: 30.0))
+              Text("Contiene spoiler", style: TextStyle(color: Color(0xffd5f971), fontSize: 30.0))
             ],
           ),
-          TextButton(
-            style: ButtonStyle(
-              foregroundColor: MaterialStateProperty.all<Color>(Colors.blue),
-            ),
+          ElevatedButton(
+            style: ElevatedButton.styleFrom(primary: Colors.teal),
             onPressed: () {
                if(_textEditingController.text.isNotEmpty) {
                  this.sendReview();
                }
             },
-            child: Text('Agregar review'),
+            child: Text('Agregar review', style: TextStyle(fontSize: 20)),
           )
         ],
-      )
+        ))
     );
   }
 }
