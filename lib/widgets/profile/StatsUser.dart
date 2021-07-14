@@ -52,7 +52,7 @@ class _StatsUserState extends State<StatsUser> {
         }
         listColumn.add(
             Padding(
-              padding: const EdgeInsets.only(bottom: 20),
+              padding: const EdgeInsets.only(bottom: 5),
               child:
               Expanded (
                 flex: 4,
@@ -99,10 +99,16 @@ class _StatsUserState extends State<StatsUser> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Padding(
-                padding: const EdgeInsets.only(top: 30, bottom: 20),
+                padding: const EdgeInsets.only(top: 30, bottom: 10),
                 child: Text(widget.message, style: TextStyle(color: Color(0xffd5f971), fontSize: 20, fontWeight: FontWeight.w600)),
               ),
-              this.widgetStats
+              this.infoStats == null ? Text(""): Padding(padding: const EdgeInsets.only(bottom: 25),
+                                                         child: Text("Total de horas: " + this.infoStats.hours.toString(),
+                                                                      style: TextStyle(color: Color(0xffd5f971), fontSize: 20, fontWeight: FontWeight.w600)),
+              ) ,
+              this.widgetStats,
+              this.infoStats == null ? Text(""): Text(this.infoStats.genders.toString(),
+                                                                  style: TextStyle(color: Color(0xffec1fa2), fontSize: 20, fontWeight: FontWeight.w600))
             ],
           ),
         )

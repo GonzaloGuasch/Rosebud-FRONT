@@ -85,11 +85,8 @@ class _VisitUserProfileState extends State<VisitUserProfile> {
                   child: Text(this.username + " publico " + this.reviewsFromUser.length.toString() + " reviews",
                   style: TextStyle(color: Color(0xffd5f971), fontSize: 20.0,fontWeight: FontWeight.w700)),
                 ),
-                Padding(
-                  padding: const EdgeInsets.only(left: 140),
-                  child: this.sigueAUsuario ? Text("Lo seguis",
-                                                    style: TextStyle(color: Color(0xffec1fa2), fontSize: 25))
-                                            : IconButton(icon: Icon(Icons.add, size: 30), onPressed: () { this.seguirAUsuario(); }),
+                   this.sigueAUsuario ? Padding(padding: const EdgeInsets.only(left: 140), child: Text("Lo seguis", style: TextStyle(color: Color(0xffec1fa2), fontSize: 25)))
+                                      : IconButton(icon: Icon(Icons.add, size: 30, color: Color(0xffec1fa2)), onPressed: () { this.seguirAUsuario(); },
                 ),
                 this.reviews
               ],

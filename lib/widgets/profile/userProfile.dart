@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-import 'package:feature_discovery/feature_discovery.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:localstorage/localstorage.dart';
@@ -71,20 +70,6 @@ class _DataRowState extends State<DataRow> {
     setState(() {});
   }
 
-  @override
-  void initState() {
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      FeatureDiscovery.discoverFeatures(context,
-          <String>[
-            "vistas",
-            "seguidores",
-            "seguidos",
-          ]
-      );
-    });
-    super.initState();
-  }
-
   Future<String> userDataAsync() async {
     String username = " ";
     if(widget.storage.getItem('username') != null) {
@@ -115,36 +100,8 @@ class _DataRowState extends State<DataRow> {
                   padding: const EdgeInsets.only(top: 23),
                   child: Text(username, style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold, color: Color(0xffd5f971))),
                 ),
-                DescribedFeatureOverlay(
-                  featureId: 'seguidores',
-                  targetColor: Colors.white,
-                  textColor: Colors.black,
-                  backgroundColor: Colors.amber,
-                  contentLocation: ContentLocation.trivial,
-                  title: Text('tus seguidores', style: TextStyle(fontSize: 20.0)),
-                  pulseDuration: Duration(seconds: 1),
-                  enablePulsingAnimation: true,
-                  barrierDismissible: false,
-                  overflowMode: OverflowMode.wrapBackground,
-                  openDuration: Duration(seconds: 1),
-                  description: Text('Hace click y mira la lista de quien te sigue'),
-                  tapTarget: Icon(Icons.person),
-                  child: DataProfileGesture(username, userData.followers.toString(), 'seguidores', true, widget.storage, this.callbackButtonAction)),
-                DescribedFeatureOverlay(
-                featureId: 'seguidos',
-                targetColor: Colors.white,
-                textColor: Colors.black,
-                backgroundColor: Colors.amber,
-                contentLocation: ContentLocation.trivial,
-                title: Text('A quien seguis', style: TextStyle(fontSize: 20.0)),
-                pulseDuration: Duration(seconds: 1),
-                enablePulsingAnimation: true,
-                barrierDismissible: false,
-                overflowMode: OverflowMode.wrapBackground,
-                openDuration: Duration(seconds: 1),
-                description: Text('Podes ver siempre a los perfiles que estas siguiendo'),
-                tapTarget: Icon(Icons.person),
-                child: DataProfileGesture(username, userData.following.toString(), 'seguidos', false, widget.storage, this.callbackButtonAction)),
+                DataProfileGesture(username, userData.followers.toString(), 'seguidores', true, widget.storage, this.callbackButtonAction),
+                DataProfileGesture(username, userData.following.toString(), 'seguidos', false, widget.storage, this.callbackButtonAction),
                 IconButton(
                   icon: Icon(Icons.logout, color: Color(0xffd5f971)),
                   tooltip: 'Logout',
