@@ -164,7 +164,7 @@ class JobOfferNoResult extends StatelessWidget {
           mainAxisSize: MainAxisSize.max,
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            Text("No hay ofertas con esos filtros :c", style: TextStyle(color: Color(0xffd5f971), fontSize: 30)),
+            Text("No hay ofertas con esos filtros", style: TextStyle(color: Color(0xffd5f971), fontSize: 30)),
           ],
         )
     );

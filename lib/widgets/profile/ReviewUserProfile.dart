@@ -20,7 +20,7 @@ class _ReviewUserProfileState extends State<ReviewUserProfile> {
         },
         child: Container(
           width: double.infinity,
-          height: 100,
+          height: 130,
           color: Color(0xff45aec4),
           padding: const EdgeInsets.all(8),
           child: Column(
