@@ -26,6 +26,7 @@ class _MarketPlaceState extends State<MarketPlace> {
 
   @override
   void initState() {
+    /*
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       FeatureDiscovery.discoverFeatures(context,
           <String>[
@@ -34,7 +35,7 @@ class _MarketPlaceState extends State<MarketPlace> {
             "agregarOferta",
           ]
       );
-    });
+    });*/
     super.initState();
     final _jobOfferData = http.get(Uri.http(BACKEND_PATH_LOCAL, "jobOffer/all/"));
     _jobOfferData.then((value) => {
@@ -122,6 +123,7 @@ class MarketplaceFilters extends StatefulWidget {
 
 class _MarketplaceFiltersState extends State<MarketplaceFilters> {
   final Function updateJobsOffer;
+  bool cleanFilter = false;
   var locationFilter = '';
   var remuneracionFilter = '';
   var categoryFilter = '';
@@ -237,11 +239,22 @@ class _MarketplaceFiltersState extends State<MarketplaceFilters> {
                             textStyle: const TextStyle(fontSize: 20),
                           ),
                           onPressed: () {
-                            final _response = http.get(Uri.http(BACKEND_PATH_LOCAL, "jobOffer/applyfilter/${this.locationFilter}/${this.remuneracionFilter}/${this.categoryFilter}"),
-                                headers: { 'Content-type': 'application/json', 'Accept': 'application/json'});
-                            _response.then((value) => this.updateOffers(value.body));
+                            if(this.cleanFilter) {
+                              final _response = http.get(Uri.http(BACKEND_PATH_LOCAL, "jobOffer/all"), headers: { 'Content-type': 'application/json', 'Accept': 'application/json'});
+                              _response.then((value) => this.updateOffers(value.body));
+                              setState(() {
+                                this.cleanFilter = false;
+                              });
+                            }else {
+                              final _response = http.get(Uri.http(BACKEND_PATH_LOCAL, "jobOffer/applyfilter/${this.locationFilter}/${this.remuneracionFilter}/${this.categoryFilter}"),
+                                  headers: { 'Content-type': 'application/json', 'Accept': 'application/json'});
+                              _response.then((value) => this.updateOffers(value.body));
+                              setState(() {
+                                this.cleanFilter = true;
+                              });
+                            }
                           },
-                          child: const Text('Aplicar filtros'),
+                          child: this.cleanFilter ? Text('Limpiar filtros') : Text('Aplicar filtros'),
                         ),
                         Padding(
                           padding: const EdgeInsets.only(left: 10),
